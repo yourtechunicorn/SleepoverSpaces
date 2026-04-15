@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="SS Guide">
 <meta name="theme-color" content="#1C1917">
-<title>Sleepover Spaces — Guest Guide</title>
+<title>Sleepover Spaces — Guest Guide · Unit 2114</title>
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -257,7 +257,6 @@ body {
 .tour-tag { font-size:10px; background:var(--cream); color:var(--muted); padding:3px 8px; border-radius:100px; font-weight:500; }
 .driver-banner { background:linear-gradient(135deg,#2a1810 0%,var(--black) 100%); border-radius:16px; padding:20px; margin-bottom:10px; display:flex; gap:14px; align-items:flex-start; }
 .driver-avatar { width:46px; height:46px; border-radius:50%; background:var(--terra); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; margin-top:2px; }
-.driver-meta {}
 .driver-role { font-size:9px; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:3px; }
 .driver-name { font-size:15px; font-weight:600; color:var(--white); margin-bottom:2px; }
 .driver-desc { font-size:11px; color:rgba(255,255,255,.4); line-height:1.5; }
@@ -393,7 +392,6 @@ body {
   background:var(--white); border:1px solid var(--sand); border-radius:14px;
   padding:16px 18px; margin-bottom:8px;
 }
-.prop-info-v2 {}
 .prop-links { display:flex; gap:8px; flex-wrap:wrap; }
 .prop-link-btn {
   display:inline-flex; align-items:center;
@@ -443,11 +441,11 @@ body {
 <script>
 const UNIT = {
   // ── Identity ──
-  number:       "1701",
-  building:     "The Median",
-  location:     "Apas, near IT Park",
-  tagline:      "Corner unit. City view. Balcony.",
-  mapCenter:    [10.3310, 123.9056],
+  number:       "2114",
+  building:     "Avida Riala Tower 2",
+  location:     "Cebu IT Park",
+  tagline:      "Inside IT Park. City views. Work-ready.",
+  mapCenter:    [10.3296, 123.9069],
 
   // ── Times ──
   checkIn:      "3:00 PM",
@@ -455,7 +453,7 @@ const UNIT = {
 
   // ── Access ──
   wifi:         { name: "Sleepover Spaces", pass: "SleepoverSpaces0987!" },
-  pin:          "159357 ✱",
+  pin:          "0000",
 
   // ── Contacts ──
   hostWhatsApp:  "https://wa.me/639215793968",
@@ -486,66 +484,62 @@ const UNIT = {
 
   // ── Building amenities ──
   buildingAmenities: [
-    { icon:"🏊", name:"Swimming Pool",          desc:"3rd floor · Open 6:00 AM to 8:00 PM" },
-    { icon:"🏓", name:"Entertainment Center",    desc:"3rd floor · Ping-pong table and games" },
-    { icon:"📚", name:"Library",                 desc:"3rd floor · Reading lounge" },
-    { icon:"🌇", name:"Viewing Decks",           desc:"15th and 26th floors · City panorama" },
-    { icon:"🛋️", name:"Lobby Lounge",            desc:"Free WiFi · Ask reception for password" },
-    { icon:"🚿", name:"Common Showers",          desc:"Near pool area on 3rd floor" },
-    { icon:"🛒", name:"24/7 Convenience Store",  desc:"Ground floor" },
-    { icon:"👕", name:"Laundry",                 desc:"Ground floor" },
-    { icon:"💧", name:"Water Refilling Station", desc:"Ground floor" },
-    { icon:"🔒", name:"24/7 Security",           desc:"Guard on duty round the clock" },
-    { icon:"🛗", name:"High-Speed Lifts",         desc:"Multiple elevators, minimal wait" },
-    { icon:"📦", name:"Reception Desk",          desc:"Accepts deliveries on your behalf" },
-    { icon:"🚬", name:"Smoking Area",            desc:"Lobby level · Please do not smoke on balcony or pool area" },
+    { icon:"🏊", name:"Infinity Pool",             desc:"Level 1 · Infinity and kiddie pool" },
+    { icon:"🏊", name:"Upper Ground Pool",         desc:"Additional pool on the upper ground floor" },
+    { icon:"🌿", name:"Outdoor Garden",            desc:"Level 1 · Open green space" },
+    { icon:"🛍️", name:"Shops — Upper Ground",      desc:"Laundry, restaurants, coffee, convenience store, ATMs" },
+    { icon:"🔒", name:"24/7 Security",             desc:"Guard on duty round the clock" },
+    { icon:"🛗", name:"High-Speed Lifts",           desc:"Multiple elevators" },
+    { icon:"📦", name:"Reception Desk",            desc:"Lower Ground Floor, left side (Tower 2)" },
+    { icon:"🚗", name:"Outdoor Parking",           desc:"Beside JP Morgan · ₱30 first 4 hrs, ₱5/hr after · Subject to availability" },
+    { icon:"🚭", name:"No Smoking Inside",         desc:"Please do not smoke inside the unit" },
   ],
 
   // ── Unit highlights ──
   unitHighlights: [
-    { icon:"🌆", name:"City Skyline View",    desc:"Floor-to-ceiling corner windows" },
-    { icon:"🪟", name:"Private Balcony",       desc:"Outdoor seating, great at sunset" },
-    { icon:"🛋️", name:"Sofa Bed",              desc:"Pulls out for a 3rd guest" },
-    { icon:"💻", name:"Work-Ready",            desc:"Desk + sofa + balcony seating" },
-    { icon:"🍳", name:"Equipped Kitchen",      desc:"Induction cooker, ref, cookware" },
+    { icon:"📍", name:"Inside IT Park",        desc:"Walk to offices, restaurants, and shops" },
+    { icon:"🌆", name:"City Views",            desc:"21st floor with open views" },
+    { icon:"🍳", name:"Kitchen Island",        desc:"Doubles as a workspace or dining area" },
+    { icon:"💻", name:"Dedicated Desk",        desc:"Work-ready setup" },
+    { icon:"🚿", name:"Towels & Toiletries",   desc:"Basic set provided for your stay" },
     { icon:"📶", name:"Fast WiFi",             desc:"Fibre connection" },
   ],
 
   // ── Review links ──
   reviewLinks: {
-    airbnb:   "https://airbnb.com/h/sleepoverspaces",
-    booking:  "https://www.booking.com/hotel/ph/breathtaking-views-of-cebu-city-at-the-median.html",
+    airbnb:   "https://airbnb.com/h/ss-rialatower2",
+    booking:  "https://www.booking.com/hotel/ph/stylish-studio-in-it-park-near-ayala-central-bloc.html",
     facebook: "https://www.facebook.com/SleepoverSpaces/reviews",
   },
 
   // ── Booking links ──
   bookingLinks: {
-    airbnb:  "https://airbnb.com/h/sleepoverspaces",
-    booking: "https://www.booking.com/hotel/ph/breathtaking-views-of-cebu-city-at-the-median.html",
-    vrbo:    "https://www.vrbo.com/en-sg/p20191890",
+    airbnb:  "https://airbnb.com/h/ss-rialatower2",
+    booking: "https://www.booking.com/hotel/ph/stylish-studio-in-it-park-near-ayala-central-bloc.html",
+    vrbo:    "https://www.vrbo.com/en-sg/p20259509",
   },
 
   // ── Other properties in the portfolio ──
   otherProperties: [
     {
+      name:     "Unit 1701 — The Median",
+      location: "Apas, near IT Park",
+      tags:     ["Corner unit", "City view", "Balcony", "3 guests"],
+      highlight: "Best views in the building",
+      links: [
+        { label:"Airbnb", url:"https://airbnb.com/h/sleepoverspaces" },
+        { label:"Booking.com", url:"https://www.booking.com/hotel/ph/breathtaking-views-of-cebu-city-at-the-median.html" },
+        { label:"VRBO", url:"https://www.vrbo.com/en-sg/p20191890" },
+      ]
+    },
+    {
       name:     "Unit 1122 — The Median",
       location: "Apas, near IT Park",
-      tags:     ["Same building", "Pool view", "2 guests"],
+      tags:     ["Pool view", "Large kitchen", "2 guests"],
       highlight: "Modern farmhouse style",
       links: [
         { label:"Airbnb", url:"https://airbnb.com/h/medianmodernfarmhouse" },
         { label:"Booking.com", url:"https://www.booking.com/hotel/ph/modern-farmhouse-studio-at-the-median-near-it-park.html" },
-      ]
-    },
-    {
-      name:     "Avida Riala Tower 2",
-      location: "Cebu IT Park",
-      tags:     ["Inside IT Park", "2 guests", "Kitchen island"],
-      highlight: "Great for digital nomads",
-      links: [
-        { label:"Airbnb", url:"https://airbnb.com/h/ss-rialatower2" },
-        { label:"Booking.com", url:"https://www.booking.com/hotel/ph/stylish-studio-in-it-park-near-ayala-central-bloc.html" },
-        { label:"VRBO", url:"https://www.vrbo.com/en-sg/p20259509" },
       ]
     },
     {
@@ -573,28 +567,28 @@ const UNIT = {
   // ── Unit-specific notes ──
   specialNotes: [
     {
-      icon: "🛋️",
-      title: "Extra Bed for Your 3rd Guest",
-      body: "Pull up the bottom part of the sofa to open the bed. Pillows are already there and we've added an extra towel for your 3rd guest."
+      icon: "🔑",
+      title: "Your Key — Please Don't Lose It",
+      body: "Collect the key from the lockbox at the reception desk (Lower Ground Floor). The lockbox code is <strong>0000</strong>.<br><br>When you leave: <strong>lock the door with the key</strong>, then return it to the lockbox and give it back to the reception desk.<br><br>A replacement fee of <strong>₱700</strong> is charged for lost keys."
     },
     {
-      icon: "💡",
-      title: "About the Lights",
-      body: "If a light switch doesn't respond, turn it on and off twice in a row without a pause. That usually does it."
+      icon: "🛏️",
+      title: "Extra Beddings in the Unit",
+      body: "You may notice extra beddings stored in the unit. Please do not use these — you will be charged per set of soiled beddings. The beds are already made up and ready for you."
     },
     {
       icon: "🗑️",
-      title: "Garbage Collection — MWF",
-      body: "Collection days: <strong>Monday, Wednesday, Friday</strong><br><br>⏰ 8:30–9:30 AM and 5:00–6:00 PM<br><br>You'll hear a bell when collectors are on your floor. Please don't leave trash in the hallway.<br><br>To dispose of trash: use the <strong>service elevator</strong> to go down to the ground floor. The garbage area is at the back — behind the convenience store, near the water refilling station."
+      title: "Trash Disposal",
+      body: "The trash room is near the elevators on your floor. You can also leave trash bags inside the unit if you prefer — just leave them in a tidy spot and our team will handle it after checkout."
     }
   ],
 
   // ── Appliances ──
   appliances: [
-    { icon:"🌡️", label:"Aircon",              value:"Remote is below the aircon unit" },
+    { icon:"🌡️", label:"Aircon",              value:"Remote provided" },
     { icon:"🚿", label:"Water heater",         value:"Heats up with enough water pressure" },
     { icon:"🍳", label:"Induction cooker",     value:"Press Power → set level" },
-    { icon:"📺", label:"Netflix / Disney+",    value:"Use Median 1701 account · Message us if it asks for a code" },
+    { icon:"📺", label:"Netflix / Disney+",    value:"Smart TV · Message us for login details" },
   ]
 };
 </script>
@@ -632,10 +626,10 @@ const UNIT = {
         <div class="card-header"><div class="card-title">At the Lobby</div><div class="badge badge-default">Present to Guard</div></div>
         <div class="card-body">
           <div class="step-list">
-            <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Approach the front desk</strong> and say you have a reservation with Sleepover Spaces.<span class="step-note">Say: "I'm checking in with Sleepover Spaces, Unit <span class="unit-num-inline">—</span>."</span></div></div>
+            <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Head to the Lower Ground Floor.</strong> Take the stairs or elevator down — reception is on the left side (Tower 2). If you arrive at the Upper Ground Floor where the shops are, walk inside the complex to find the stairs or elevator.<span class="step-note">Say: "I'm checking in with Sleepover Spaces, Unit <span class="unit-num-inline">—</span>."</span></div></div>
             <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Present a valid government-issued ID</strong> — passport, driver's license, or national ID. One per adult guest.</div></div>
-            <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Fill the visitor logbook</strong> if asked — name, unit number, duration of stay.</div></div>
-            <div class="step-item"><div class="step-num">4</div><div class="step-text"><strong>Head to the elevator.</strong> Your door has a keypad lock — tap the front of the lock with your palm to reveal the numbers, enter your code, then press ✱.</div></div>
+            <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Ask for the lockbox.</strong> The lockbox code is <strong>0000</strong>. This contains your physical key — please keep it safe.</div></div>
+            <div class="step-item"><div class="step-num red">!</div><div class="step-text"><strong>Lost key fine: ₱700.</strong> Return the key to the reception lockbox when you check out.</div></div>
           </div>
         </div>
       </div>
@@ -643,7 +637,7 @@ const UNIT = {
         <div class="card-body">
           <div class="info-row"><div class="info-label">Check-in from</div><div class="info-value" id="checkin-time">—</div></div>
           <div class="info-row"><div class="info-label">Check-out by</div><div class="info-value" id="checkout-time">—</div></div>
-          <div class="info-row"><div class="info-label">Early / late check-in</div><div class="info-value terra">Message us · Subject to availability</div></div>
+          <div class="info-row"><div class="info-label">Early / late check-in</div><div class="info-value terra">Message us · Subject to availability · May incur a fee</div></div>
         </div>
       </div>
     </div>
@@ -651,16 +645,21 @@ const UNIT = {
     <div class="section">
       <div class="section-eyebrow">02 — Getting Here</div>
       <div class="section-title">Find Us</div>
-      <a href="https://maps.app.goo.gl/xWHtXJNGFBgH9pbbA" target="_blank" class="maps-btn">
+      <a href="https://maps.app.goo.gl/GWDfE8RTFF2zHJ4h9" target="_blank" class="maps-btn">
         <div class="maps-btn-left">
           <div class="maps-btn-icon">📍</div>
           <div>
             <div class="maps-btn-title">Open in Google Maps</div>
-            <div class="maps-btn-sub">The Median, Apas, Cebu City</div>
+            <div class="maps-btn-sub">Avida Riala Tower 2, Cebu IT Park</div>
           </div>
         </div>
         <div class="maps-btn-arrow">→</div>
       </a>
+      <div class="card" style="margin-top:10px"><div class="card-body">
+        <div class="info-row"><div class="info-label">🏢 Landmark</div><div class="info-value light">In front of EBloc 4 / JP Morgan Building</div></div>
+        <div class="info-row"><div class="info-label">🗼 Which tower</div><div class="info-value light">Tower 2 · Left tower when facing the complex</div></div>
+        <div class="info-row"><div class="info-label">🚪 Reception</div><div class="info-value light">Lower Ground Floor · Take stairs or elevator down</div></div>
+      </div></div>
     </div>
     <div class="section-divider"></div>
     <div class="section">
@@ -671,9 +670,9 @@ const UNIT = {
         <div><div class="wifi-label">WiFi Network</div><div class="wifi-name" id="wifi-name">—</div><div class="wifi-pass" id="wifi-pass">—</div></div>
       </div>
       <div class="pin-block">
-        <div class="pin-label">Door PIN Code</div>
+        <div class="pin-label">Lockbox Code</div>
         <div class="pin-number" id="door-pin">—</div>
-        <div class="pin-hint">Tap the front of the lock with your palm to reveal the numbers · Enter code · Press ✱ to confirm · Pull or push firmly to close — it will make a sound if the door is still open</div>
+        <div class="pin-hint">Collect lockbox from reception (Lower Ground Floor) · Enter code to retrieve your key · Return key to lockbox on checkout</div>
       </div>
     </div>
     <div class="section-divider"></div>
@@ -710,8 +709,8 @@ const UNIT = {
         <div class="card-body">
           <div class="timeline">
             <div class="tl-item"><div class="tl-left"><div class="tl-circle">🌅</div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-time">Morning of checkout</div><div class="tl-title">You'll get a reminder</div><div class="tl-desc">We'll send a checkout reminder through the same app you booked on.</div></div></div>
-            <div class="tl-item"><div class="tl-left"><div class="tl-circle">🧹</div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-time">Before leaving</div><div class="tl-title">Quick tidy-up</div><div class="tl-desc">Turn off aircon and lights · Towels in bathroom · Rinse dishes · Return sofa bed if used · No need to unplug anything — just please don't unplug the ref if there's still food inside.</div></div></div>
-            <div class="tl-item"><div class="tl-left"><div class="tl-circle">🚪</div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-time">When leaving</div><div class="tl-title">No key to return</div><div class="tl-desc">Pull the door shut — it locks automatically.</div></div></div>
+            <div class="tl-item"><div class="tl-left"><div class="tl-circle">🧹</div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-time">Before leaving</div><div class="tl-title">Quick tidy-up</div><div class="tl-desc">Turn off aircon and lights · Towels in bathroom · Rinse dishes · No need to unplug anything — just please don't unplug the ref if there's still food inside.</div></div></div>
+            <div class="tl-item"><div class="tl-left"><div class="tl-circle">🚪</div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-time">When leaving</div><div class="tl-title">Lock the door and return the key</div><div class="tl-desc">Lock the door with your key, then return it to the lockbox at the reception desk (Lower Ground Floor). ₱700 replacement fee for lost keys.</div></div></div>
             <div class="tl-item"><div class="tl-left"><div class="tl-circle filled">⭐</div></div><div class="tl-content"><div class="tl-time">After checkout</div><div class="tl-title">Leave us a review</div><div class="tl-desc">Leave a review on whichever platform you booked on — or find all our listings in the <strong>Spaces</strong> tab. It means a lot to us. 🙏</div></div></div>
           </div>
         </div>
@@ -748,14 +747,13 @@ const UNIT = {
       <div class="section-eyebrow">Parking</div>
       <div class="section-title">Need a Slot?</div>
       <div class="parking-card">
-        <div class="urgency-badge">⚠ Request at least 3 days before arrival</div>
-        <div class="parking-title">Parking is Available</div>
+        <div class="urgency-badge">🚗 Outdoor parking only</div>
+        <div class="parking-title">Parking Options</div>
         <div class="parking-steps">
-          <div class="parking-step"><div class="parking-num">1</div><div class="parking-text"><strong>Message us on WhatsApp</strong> as early as possible. Slots are not always available last-minute.</div></div>
-          <div class="parking-step"><div class="parking-num">2</div><div class="parking-text"><strong>Rates are typically ₱250–₱300 per night</strong>, paid directly to the slot owner.</div></div>
-          <div class="parking-step"><div class="parking-num">3</div><div class="parking-text"><strong>We'll connect you with the slot owner</strong> directly — they'll provide all the details for access and payment.</div></div>
+          <div class="parking-step"><div class="parking-num">1</div><div class="parking-text"><strong>Building parking is not available</strong> for guests — we are unable to assist with parking inside Avida Riala.</div></div>
+          <div class="parking-step"><div class="parking-num">2</div><div class="parking-text"><strong>Outdoor parking beside JP Morgan building</strong> is your best option. Rates: ₱30 for the first 4 hours, then ₱5/hour after. Subject to availability.</div></div>
+          <div class="parking-step"><div class="parking-num">3</div><div class="parking-text"><strong>Grab or ride-hailing</strong> is the easiest option if you're coming from the airport or elsewhere in the city.</div></div>
         </div>
-        <a id="parking-wa-btn" href="#" class="parking-btn"><svg width="13" height="13" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> Request Parking (3+ days ahead)</a>
       </div>
     </div>
     <div class="section-divider"></div>
@@ -1005,7 +1003,6 @@ function populate() {
 
   const wa = msg => UNIT.hostWhatsApp + '?text=' + encodeURIComponent(msg);
   document.getElementById('host-wa-btn').href = UNIT.hostWhatsApp;
-  document.getElementById('parking-wa-btn').href = wa('Hi! I\'m checking into Unit ' + UNIT.number + ' and I\'d like to request a parking slot.');
 
   // Social footers
   ['fb-footer','fb-footer2'].forEach(id => { const el=document.getElementById(id); if(el) el.href=UNIT.facebookPage; });
