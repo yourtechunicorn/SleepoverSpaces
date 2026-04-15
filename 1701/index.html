@@ -152,6 +152,20 @@ body {
 .tl-title { font-size:13px; font-weight:600; color:var(--black); margin-bottom:3px; }
 .tl-desc { font-size:12px; color:var(--muted); line-height:1.5; }
 
+/* ── MAPS BUTTON ── */
+.maps-btn {
+  display:flex; align-items:center; justify-content:space-between;
+  background:var(--white); border:1.5px solid var(--sand); border-radius:16px;
+  padding:16px 18px; text-decoration:none; gap:12px;
+  transition: box-shadow 0.15s;
+}
+.maps-btn:active { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.maps-btn-left { display:flex; align-items:center; gap:14px; }
+.maps-btn-icon { font-size:28px; flex-shrink:0; }
+.maps-btn-title { font-size:14px; font-weight:700; color:var(--black); margin-bottom:2px; }
+.maps-btn-sub { font-size:11px; color:var(--muted); }
+.maps-btn-arrow { font-size:18px; color:var(--muted); flex-shrink:0; }
+
 /* ── CONTACT CARD FULL WIDTH ── */
 .contact-card-full {
   background: var(--black); border-radius: 16px; padding: 18px 20px;
@@ -635,7 +649,22 @@ const UNIT = {
     </div>
     <div class="section-divider"></div>
     <div class="section">
-      <div class="section-eyebrow">02 — Access</div>
+      <div class="section-eyebrow">02 — Getting Here</div>
+      <div class="section-title">Find Us</div>
+      <a href="https://maps.app.goo.gl/xWHtXJNGFBgH9pbbA" target="_blank" class="maps-btn">
+        <div class="maps-btn-left">
+          <div class="maps-btn-icon">📍</div>
+          <div>
+            <div class="maps-btn-title">Open in Google Maps</div>
+            <div class="maps-btn-sub">The Median, Apas, Cebu City</div>
+          </div>
+        </div>
+        <div class="maps-btn-arrow">→</div>
+      </a>
+    </div>
+    <div class="section-divider"></div>
+    <div class="section">
+      <div class="section-eyebrow">03 — Access</div>
       <div class="section-title">WiFi & Door</div>
       <div class="wifi-block">
         <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.35)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.038a5.25 5.25 0 0 1 7.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 0 1 1.06 0Z"/></svg>
@@ -649,7 +678,7 @@ const UNIT = {
     </div>
     <div class="section-divider"></div>
     <div class="section">
-      <div class="section-eyebrow">03 — Your Unit</div>
+      <div class="section-eyebrow">04 — Your Unit</div>
       <div class="section-title">Good to Know</div>
       <div id="unit-notes-container"></div>
       <div class="card">
@@ -659,7 +688,7 @@ const UNIT = {
     </div>
     <div class="section-divider"></div>
     <div class="section">
-      <div class="section-eyebrow">04 — Support</div>
+      <div class="section-eyebrow">05 — Support</div>
       <div class="section-title">Need Help?</div>
       <div class="contact-card-full">
         <div class="contact-card-full-left">
@@ -674,7 +703,7 @@ const UNIT = {
     </div>
     <div class="section-divider"></div>
     <div class="section">
-      <div class="section-eyebrow">05 — Departure</div>
+      <div class="section-eyebrow">06 — Departure</div>
       <div class="section-title">Checking Out</div>
       <div class="card">
         <div class="card-header"><div class="card-title">Checkout by 12:00 NN</div><div class="badge badge-red">Important</div></div>
@@ -771,20 +800,50 @@ const UNIT = {
         <button class="zone-tab" onclick="switchZone('philippines',this)">🇵🇭 Philippines</button>
       </div>
       <div class="zone-panel active" id="zone-nearby">
-        <div class="cat-label">🍽️ Eat &amp; Drink</div>
-        <div class="place-row"><div class="place-emoji">🥩</div><div><div class="place-name">House of Lechon</div><div class="place-desc">Iconic Cebu lechon. A must-try.</div></div><div class="place-dist">~10 min</div></div>
-        <div class="place-row"><div class="place-emoji">🍜</div><div><div class="place-name">Sugbo Mercado</div><div class="place-desc">IT Park food market with dozens of stalls. Great evenings.</div></div><div class="place-dist">IT Park</div></div>
-        <div class="place-row"><div class="place-emoji">☕</div><div><div class="place-name">Pickup Coffee</div><div class="place-desc">About 3 minutes walk from the building.</div></div><div class="place-dist">~3 min walk</div></div>
-        <div class="place-row"><div class="place-emoji">☕</div><div><div class="place-name">Bo's Coffee</div><div class="place-desc">Homegrown Cebu chain. Great for working.</div></div><div class="place-dist">IT Park</div></div>
-        <div class="place-row"><div class="place-emoji">🍳</div><div><div class="place-name">Yolk (Oakridge)</div><div class="place-desc">Popular brunch spot nearby.</div></div><div class="place-dist">~5 min</div></div>
+
+        <div class="cat-label">🍽️ Cebu Must-Eats</div>
+        <div class="place-row"><div class="place-emoji">🥩</div><div><div class="place-name">House of Lechon</div><div class="place-desc">Iconic Cebu lechon — crispy skin, tender meat. Non-negotiable.</div></div><div class="place-dist">~10 min</div></div>
+        <div class="place-row"><div class="place-emoji">🥩</div><div><div class="place-name">Rico's Lechon</div><div class="place-desc">Spicy lechon. Different from House of Lechon — try both.</div></div><div class="place-dist">~10 min</div></div>
+        <div class="place-row"><div class="place-emoji">🍲</div><div><div class="place-name">Tuslob Buwa</div><div class="place-desc">Cebu street food classic — pig brain broth, you dip puso (hanging rice) in it. Downtown area.</div></div><div class="place-dist">~15 min</div></div>
+        <div class="place-row"><div class="place-emoji">🍱</div><div><div class="place-name">Pungko Pungko</div><div class="place-desc">Sidewalk dining — fried street food eaten on low stools. A Cebu ritual.</div></div><div class="place-dist">~15 min</div></div>
+        <div class="place-row"><div class="place-emoji">🍧</div><div><div class="place-name">Halo-Halo</div><div class="place-desc">Shaved ice dessert with all the toppings. Best in the heat of the afternoon.</div></div><div class="place-dist">Everywhere</div></div>
+        <div class="place-row"><div class="place-emoji">🍜</div><div><div class="place-name">Sugbo Mercado</div><div class="place-desc">IT Park food market with dozens of stalls. Great for evenings.</div></div><div class="place-dist">IT Park</div></div>
+        <div class="place-row"><div class="place-emoji">🐷</div><div><div class="place-name">The Pig and Palm</div><div class="place-desc">Modern Filipino and European-inspired. Great ambiance.</div></div><div class="place-dist">~10 min</div></div>
         <div class="place-row"><div class="place-emoji">⭐</div><div><div class="place-name">Soccarat</div><div class="place-desc">Michelin-recognized restaurant in Cebu.</div></div><div class="place-dist">~10 min</div></div>
-        <div class="place-row"><div class="place-emoji">🍽️</div><div><div class="place-name">Dean &amp; DeLuca at 38 Park</div><div class="place-desc">Upscale cafe and dining.</div></div><div class="place-dist">~10 min</div></div>
-        <div class="place-row"><div class="place-emoji">🍷</div><div><div class="place-name">Anzani Restaurant</div><div class="place-desc">Upscale Mediterranean, sea views.</div></div><div class="place-dist">~15 min</div></div>
+        <div class="place-row"><div class="place-emoji">🍽️</div><div><div class="place-name">Dean &amp; DeLuca at 38 Park</div><div class="place-desc">Upscale cafe and dining in a beautiful space.</div></div><div class="place-dist">~10 min</div></div>
+
+        <div class="cat-label">🇵🇭 Filipino Classics</div>
+        <div class="place-row"><div class="place-emoji">🐝</div><div><div class="place-name">Jollibee</div><div class="place-desc">The Filipino fast food icon. Chickenjoy is mandatory.</div></div><div class="place-dist">Multiple</div></div>
+        <div class="place-row"><div class="place-emoji">🍗</div><div><div class="place-name">Mang Inasal</div><div class="place-desc">Unlimited rice and grilled chicken. Cebu comfort food.</div></div><div class="place-dist">Multiple</div></div>
+
+        <div class="cat-label">☕ Coffee &amp; Chill</div>
+        <div class="place-row"><div class="place-emoji">☕</div><div><div class="place-name">Pickup Coffee</div><div class="place-desc">About 3 minutes walk. Quick, good, affordable.</div></div><div class="place-dist">~3 min walk</div></div>
+        <div class="place-row"><div class="place-emoji">☕</div><div><div class="place-name">Bo's Coffee</div><div class="place-desc">Born in Cebu. The homegrown coffee chain that started it all.</div></div><div class="place-dist">IT Park</div></div>
+        <div class="place-row"><div class="place-emoji">☕</div><div><div class="place-name">Good Cup Coffee</div><div class="place-desc">Specialty coffee, good workspace vibe.</div></div><div class="place-dist">~10 min</div></div>
+        <div class="place-row"><div class="place-emoji">🪴</div><div><div class="place-name">Above the Corner</div><div class="place-desc">Chill rooftop coffee spot. Great for an afternoon out.</div></div><div class="place-dist">~15 min</div></div>
+
+        <div class="cat-label">🍺 Bars &amp; Nightlife</div>
+        <div class="place-row"><div class="place-emoji">🥂</div><div><div class="place-name">Straight Up Bar — Seda Central Bloc</div><div class="place-desc">Rooftop bar with city views. Great cocktails, upscale vibe.</div></div><div class="place-dist">Walking</div></div>
+        <div class="place-row"><div class="place-emoji">🌿</div><div><div class="place-name">Verified Rooftop Bar</div><div class="place-desc">Trendy rooftop, good for sunsets and drinks.</div></div><div class="place-dist">~10 min</div></div>
+        <div class="place-row"><div class="place-emoji">🍸</div><div><div class="place-name">Dosage</div><div class="place-desc">Cocktail bar with creative drinks. Popular with the after-work crowd.</div></div><div class="place-dist">~10 min</div></div>
+        <div class="place-row"><div class="place-emoji">🥃</div><div><div class="place-name">The Distillery Cebu</div><div class="place-desc">Whisky and craft spirits bar. Good selection.</div></div><div class="place-dist">~10 min</div></div>
+        <div class="place-row"><div class="place-emoji">🎶</div><div><div class="place-name">G Spot</div><div class="place-desc">Live music bar. Cebu institution.</div></div><div class="place-dist">~10 min</div></div>
+        <div class="place-row"><div class="place-emoji">🎉</div><div><div class="place-name">Icon</div><div class="place-desc">Club and bar. Good for late nights.</div></div><div class="place-dist">~10 min</div></div>
+        <div class="place-row"><div class="place-emoji">🪑</div><div><div class="place-name">Bar Kanto</div><div class="place-desc">Laid-back corner bar. Street food and cold beers.</div></div><div class="place-dist">~10 min</div></div>
+
+        <div class="cat-label">💪 Stay Active</div>
+        <div class="place-row"><div class="place-emoji">🏋️</div><div><div class="place-name">Anytime Fitness — Central Bloc</div><div class="place-desc">Drop-in available. Walking distance from IT Park.</div></div><div class="place-dist">Walking</div></div>
+        <div class="place-row"><div class="place-emoji">🏋️</div><div><div class="place-name">Anytime Fitness — JY Square</div><div class="place-desc">Another branch nearby.</div></div><div class="place-dist">~10 min</div></div>
+        <div class="place-row"><div class="place-emoji">🏋️</div><div><div class="place-name">CrossFit Subtero Underground</div><div class="place-desc">Functional fitness and CrossFit classes.</div></div><div class="place-dist">~10 min</div></div>
+        <div class="place-row"><div class="place-emoji">🏟️</div><div><div class="place-name">Magnum Sports Complex</div><div class="place-desc">Full sports facility — courts, gym, pool.</div></div><div class="place-dist">~15 min</div></div>
+        <div class="place-row"><div class="place-emoji">🚴</div><div><div class="place-name">Car Free Sundays</div><div class="place-desc">Every Sunday morning — IT Park and Cebu Business Park close to cars. Cycling, jogging, skating, community vibes. Free.</div></div><div class="place-dist">IT Park · Sundays</div></div>
+
         <div class="cat-label">🗺️ See &amp; Do</div>
         <div class="place-row"><div class="place-emoji">🏛️</div><div><div class="place-name">Basilica del Santo Niño</div><div class="place-desc">Oldest Catholic church in the Philippines.</div></div><div class="place-dist">~15 min</div></div>
         <div class="place-row"><div class="place-emoji">⛪</div><div><div class="place-name">Magellan's Cross</div><div class="place-desc">Historic landmark right beside the Basilica.</div></div><div class="place-dist">~15 min</div></div>
         <div class="place-row"><div class="place-emoji">🛕</div><div><div class="place-name">Temple of Leah</div><div class="place-desc">Grand hilltop monument — Cebu's own "Taj Mahal."</div></div><div class="place-dist">~20 min</div></div>
         <div class="place-row"><div class="place-emoji">🛤️</div><div><div class="place-name">Colon Street</div><div class="place-desc">The oldest street in the Philippines. Historic downtown Cebu.</div></div><div class="place-dist">~15 min</div></div>
+
         <div class="cat-label">🛍️ Shopping</div>
         <div class="place-row"><div class="place-emoji">🏬</div><div><div class="place-name">Ayala Center Cebu</div><div class="place-desc">Premier mall with dining, cinema, and retail.</div></div><div class="place-dist">~10 min</div></div>
         <div class="place-row"><div class="place-emoji">🏢</div><div><div class="place-name">Ayala Central Bloc</div><div class="place-desc">Walkable from IT Park. Restaurants, bars, shops.</div></div><div class="place-dist">Walking</div></div>
@@ -794,22 +853,40 @@ const UNIT = {
         <div class="place-row"><div class="place-emoji">🛒</div><div><div class="place-name">S&amp;R Members' Only</div><div class="place-desc">Membership warehouse club, great value.</div></div><div class="place-dist">~15 min</div></div>
         <div class="place-row"><div class="place-emoji">🏬</div><div><div class="place-name">Robinsons Galleria</div><div class="place-desc">Large mall, good variety of stores.</div></div><div class="place-dist">~15 min</div></div>
       </div>
+
       <div class="zone-panel" id="zone-daytrips">
-        <div class="driver-banner"><div class="driver-avatar">🚗</div><div class="driver-meta"><div class="driver-role">For all Cebu day trips</div><div class="driver-name">Arranged via WhatsApp</div><div class="driver-desc">South Cebu, highlands, Bohol ferry drop-off, city tours</div><a id="daytrips-driver-btn" href="#" class="driver-btn"><svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> Message Us on WhatsApp</a></div></div>
-        <div class="tour-card"><div class="tour-accent" style="background:var(--terra)"></div><div class="tour-body"><div class="tour-type">Highlands · ~30 min drive</div><div class="tour-name">Tops & Busay Viewpoint</div><div class="tour-desc">Best aerial view of Cebu. Worth it at sunset.</div><div class="tour-tags"><span class="tour-tag">2–3 hrs</span><span class="tour-tag">City view</span><span class="tour-tag">Sunset</span></div></div></div>
-        <div class="tour-card"><div class="tour-accent" style="background:var(--black)"></div><div class="tour-body"><div class="tour-type">South Cebu · Full Day</div><div class="tour-name">Kawasan Falls & South Route</div><div class="tour-desc">Oslob whale sharks, canyoneering, Tumalog Falls.</div><div class="tour-tags"><span class="tour-tag">Full day</span><span class="tour-tag">Adventure</span></div></div></div>
-        <div class="tour-card"><div class="tour-accent" style="background:var(--red)"></div><div class="tour-body"><div class="tour-type">Island Day Trip · Pier 1 Ferry</div><div class="tour-name">Bohol</div><div class="tour-desc">Chocolate Hills, Tarsier Sanctuary, Loboc River Cruise.</div><div class="tour-tags"><span class="tour-tag">Full day</span><span class="tour-tag">Island</span><span class="tour-tag">Wildlife</span></div></div></div>
+        <div class="driver-banner"><div class="driver-avatar">🚗</div><div class="driver-meta"><div class="driver-role">For all Cebu day trips</div><div class="driver-name">Arranged via WhatsApp</div><div class="driver-desc">South Cebu, islands, highlands, Bohol ferry drop-off, city tours</div><a id="daytrips-driver-btn" href="#" class="driver-btn"><svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> Message Us on WhatsApp</a></div></div>
+
+        <div class="tour-card"><div class="tour-accent" style="background:var(--terra)"></div><div class="tour-body"><div class="tour-type">Highlands · ~30 min drive</div><div class="tour-name">Tops &amp; Busay Viewpoint</div><div class="tour-desc">Best aerial view of Cebu City. Worth it at sunset.</div><div class="tour-tags"><span class="tour-tag">2–3 hrs</span><span class="tour-tag">City view</span><span class="tour-tag">Sunset</span></div></div></div>
+
         <div class="tour-card"><div class="tour-accent" style="background:#0ea5e9"></div><div class="tour-body"><div class="tour-type">Beaches · ~35 min drive</div><div class="tour-name">Mactan Island</div><div class="tour-desc">Shangri-La, Crimson, or Hadsan public beach.</div><div class="tour-tags"><span class="tour-tag">Half/full day</span><span class="tour-tag">Beach</span></div></div></div>
+
+        <div class="tour-card"><div class="tour-accent" style="background:#16a34a"></div><div class="tour-body"><div class="tour-type">South Cebu · ~1.5 hr drive</div><div class="tour-name">Moalboal</div><div class="tour-desc">World-class diving and snorkeling. Sardine run, sea turtles, Panagsama Beach.</div><div class="tour-tags"><span class="tour-tag">Half/full day</span><span class="tour-tag">Diving</span><span class="tour-tag">Snorkeling</span></div></div></div>
+
+        <div class="tour-card"><div class="tour-accent" style="background:var(--black)"></div><div class="tour-body"><div class="tour-type">South Cebu · Full Day</div><div class="tour-name">Kawasan Falls &amp; South Route</div><div class="tour-desc">Oslob whale sharks, canyoneering at Kawasan, Tumalog Falls. One of the best full-day routes in Cebu.</div><div class="tour-tags"><span class="tour-tag">Full day</span><span class="tour-tag">Adventure</span><span class="tour-tag">Waterfalls</span></div></div></div>
+
+        <div class="tour-card"><div class="tour-accent" style="background:#06b6d4"></div><div class="tour-body"><div class="tour-type">South Cebu · Via Oslob · Full Day</div><div class="tour-name">Sumilon Island</div><div class="tour-desc">Stunning sandbar that appears at low tide. Crystal-clear water, great for snorkeling.</div><div class="tour-tags"><span class="tour-tag">Full day</span><span class="tour-tag">Island</span><span class="tour-tag">Sandbar</span></div></div></div>
+
+        <div class="tour-card"><div class="tour-accent" style="background:var(--red)"></div><div class="tour-body"><div class="tour-type">Island · Full Day + Travel</div><div class="tour-name">Bantayan Island</div><div class="tour-desc">Powdery white sand, turquoise water, laid-back island life. Ferry from Hagnaya Port (~3 hrs total).</div><div class="tour-tags"><div class="tour-tag">Full day</div><span class="tour-tag">White sand</span><span class="tour-tag">Ferry</span></div></div></div>
+
+        <div class="tour-card"><div class="tour-accent" style="background:var(--terra)"></div><div class="tour-body"><div class="tour-type">Island · Full Day + Travel</div><div class="tour-name">Malapascua Island</div><div class="tour-desc">Famous for thresher shark diving. Small, quiet island with beautiful beaches. Ferry from Maya Port (~4 hrs total).</div><div class="tour-tags"><span class="tour-tag">Full day</span><span class="tour-tag">Diving</span><span class="tour-tag">Ferry</span></div></div></div>
+
+        <div class="tour-card"><div class="tour-accent" style="background:#7c3aed"></div><div class="tour-body"><div class="tour-type">Island Day Trip · Pier 1 Ferry</div><div class="tour-name">Bohol</div><div class="tour-desc">Chocolate Hills, Tarsier Sanctuary, Loboc River Cruise. Fast ferry from Pier 1.</div><div class="tour-tags"><span class="tour-tag">Full day</span><span class="tour-tag">Island</span><span class="tour-tag">Wildlife</span></div></div></div>
+
+        <div class="tour-card"><div class="tour-accent" style="background:var(--muted)"></div><div class="tour-body"><div class="tour-type">City Tours</div><div class="tour-name">Cebu Heritage &amp; Food Tours</div><div class="tour-desc">Museum circuit (Cebu Heritage Monument, Casa Gorordo, Fort San Pedro), guided food tours through downtown Cebu, or a full lechon and street food crawl. Message us to arrange.</div><div class="tour-tags"><span class="tour-tag">Half/full day</span><span class="tour-tag">History</span><span class="tour-tag">Food</span><span class="tour-tag">Culture</span></div></div></div>
       </div>
       <div class="zone-panel" id="zone-philippines">
-        <div class="ph-tours-header"><div class="pth-eyebrow">Sleepover Spaces Travel & Tours</div><div class="pth-title">Go further.<br>Explore the Philippines.</div><div class="pth-desc">From Cebu, you're perfectly placed to reach some of the best islands in the world. We can arrange flights, accommodations, and full itineraries.</div><a id="ph-tours-btn" href="#" class="pth-btn"><svg width="14" height="14" fill="#0C6E8C" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> Inquire on WhatsApp</a></div>
+        <div class="ph-tours-header"><div class="pth-eyebrow">From Cebu</div><div class="pth-title">Go further.<br>Explore the Philippines.</div><div class="pth-desc">You're perfectly placed to reach some of the best destinations in the country.</div></div>
         <div class="ph-dest-grid">
-          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(12,110,140,0.06)">🏝️</div><div class="ph-dest-body"><div class="ph-dest-region">Palawan</div><div class="ph-dest-name">El Nido & Coron</div><div class="ph-dest-desc">Limestone cliffs, hidden lagoons, clearest water on earth.</div><div class="ph-dest-tags"><span class="ph-dest-tag">~1 hr flight</span><span class="ph-dest-tag">Island hopping</span></div></div></div>
-          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(239,58,93,0.05)">🌊</div><div class="ph-dest-body"><div class="ph-dest-region">Mindanao</div><div class="ph-dest-name">Siargao</div><div class="ph-dest-desc">Surf capital of PH. Cloud 9, rock pools, island hopping.</div><div class="ph-dest-tags"><span class="ph-dest-tag">~50 min flight</span><span class="ph-dest-tag">Surfing</span></div></div></div>
+          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(12,110,140,0.06)">🏝️</div><div class="ph-dest-body"><div class="ph-dest-region">Palawan</div><div class="ph-dest-name">El Nido &amp; Coron</div><div class="ph-dest-desc">Limestone cliffs, hidden lagoons, clearest water on earth.</div><div class="ph-dest-tags"><span class="ph-dest-tag">~1 hr flight</span><span class="ph-dest-tag">Island hopping</span></div></div></div>
+          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(239,58,93,0.05)">🌊</div><div class="ph-dest-body"><div class="ph-dest-region">Mindanao</div><div class="ph-dest-name">Siargao</div><div class="ph-dest-desc">Surf capital of the Philippines. Cloud 9, rock pools, island vibes.</div><div class="ph-dest-tags"><span class="ph-dest-tag">~50 min flight</span><span class="ph-dest-tag">Surfing</span></div></div></div>
           <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(196,120,90,0.07)">🌴</div><div class="ph-dest-body"><div class="ph-dest-region">Aklan</div><div class="ph-dest-name">Boracay</div><div class="ph-dest-desc">White Beach, watersports, world-class sunsets.</div><div class="ph-dest-tags"><span class="ph-dest-tag">~1 hr flight</span><span class="ph-dest-tag">Beach</span></div></div></div>
-          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(16,163,74,0.06)">🦈</div><div class="ph-dest-body"><div class="ph-dest-region">Leyte</div><div class="ph-dest-name">Sogod Bay</div><div class="ph-dest-desc">Whale sharks, Sohoton Cave, underrated diving.</div><div class="ph-dest-tags"><span class="ph-dest-tag">Ferry + bus</span><span class="ph-dest-tag">Diving</span></div></div></div>
-          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(12,110,140,0.06)">🌋</div><div class="ph-dest-body"><div class="ph-dest-region">Bicol / Batanes</div><div class="ph-dest-name">Mayon & Batanes</div><div class="ph-dest-desc">Perfect volcanic cone and rolling northern hills.</div><div class="ph-dest-tags"><span class="ph-dest-tag">Via Manila</span><span class="ph-dest-tag">Scenic</span></div></div></div>
-          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(239,58,93,0.05)">🏙️</div><div class="ph-dest-body"><div class="ph-dest-region">Luzon</div><div class="ph-dest-name">Manila & Tagaytay</div><div class="ph-dest-desc">Intramuros, BGC, Taal Volcano ridge views.</div><div class="ph-dest-tags"><span class="ph-dest-tag">~1.5 hr flight</span><span class="ph-dest-tag">City</span></div></div></div>
+          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(16,163,74,0.07)">🌿</div><div class="ph-dest-body"><div class="ph-dest-region">Benguet</div><div class="ph-dest-name">Baguio</div><div class="ph-dest-desc">Cool highland city, pine trees, strawberry farms, cafes.</div><div class="ph-dest-tags"><span class="ph-dest-tag">Via Manila</span><span class="ph-dest-tag">Highlands</span></div></div></div>
+          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(12,110,140,0.07)">🏄</div><div class="ph-dest-body"><div class="ph-dest-region">La Union</div><div class="ph-dest-name">La Union</div><div class="ph-dest-desc">Surf town with good vibes, great food, and San Juan beach.</div><div class="ph-dest-tags"><span class="ph-dest-tag">Via Manila</span><span class="ph-dest-tag">Surfing</span></div></div></div>
+          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(12,110,140,0.06)">🌾</div><div class="ph-dest-body"><div class="ph-dest-region">Cagayan Valley</div><div class="ph-dest-name">Batanes</div><div class="ph-dest-desc">Rolling hills, stone houses, dramatic coastlines. The most unique scenery in PH.</div><div class="ph-dest-tags"><span class="ph-dest-tag">Via Manila</span><span class="ph-dest-tag">Scenic</span></div></div></div>
+          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(239,58,93,0.06)">🌋</div><div class="ph-dest-body"><div class="ph-dest-region">Mindanao</div><div class="ph-dest-name">Camiguin</div><div class="ph-dest-desc">Tiny island with the most volcanoes per km². White Island sandbar, hot springs.</div><div class="ph-dest-tags"><span class="ph-dest-tag">~1 hr flight</span><span class="ph-dest-tag">Island</span></div></div></div>
+          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(196,120,90,0.08)">✨</div><div class="ph-dest-body"><div class="ph-dest-region">Visayas</div><div class="ph-dest-name">Siquijor</div><div class="ph-dest-desc">Mystical island with white beaches, waterfalls, and firefly farms.</div><div class="ph-dest-tags"><span class="ph-dest-tag">Fast ferry</span><span class="ph-dest-tag">Beaches</span></div></div></div>
+          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(239,58,93,0.05)">🏙️</div><div class="ph-dest-body"><div class="ph-dest-region">Luzon</div><div class="ph-dest-name">Manila &amp; Tagaytay</div><div class="ph-dest-desc">Intramuros, BGC, Taal Volcano ridge views.</div><div class="ph-dest-tags"><span class="ph-dest-tag">~1.5 hr flight</span><span class="ph-dest-tag">City</span></div></div></div>
         </div>
       </div>
     </div>
@@ -938,8 +1015,6 @@ function populate() {
   // Transport - airport
   document.getElementById('driver-wa-btn').href = wa('Hi! I\'m a guest at Unit ' + UNIT.number + ' and I\'d like to arrange an airport transfer.');
   document.getElementById('daytrips-driver-btn').href = wa('Hi! I\'m a Sleepover Spaces guest at Unit ' + UNIT.number + ' and I\'d like to arrange a day tour.');
-  document.getElementById('ph-tours-btn').href = UNIT.toursWhatsApp + '?text=' + encodeURIComponent('Hi! I\'m staying at Sleepover Spaces Unit ' + UNIT.number + ' and I\'m interested in a Philippines trip.');
-
   // Unit notes
   UNIT.specialNotes.forEach(note => {
     const el = document.createElement('div');
