@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SS Guide">
+<meta name="theme-color" content="#1C1917">
+<title>Sleepover Spaces — Guest Guide</title>
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --black:  #1C1917;
+  --red:    #EF3A5D;
+  --cream:  #F8F4EE;
+  --sand:   #D6CCC2;
+  --terra:  #C4785A;
+  --muted:  #8C827C;
+  --white:  #FFFFFF;
+  --bg:     #F0EDE8;
+  --ocean:  #0C6E8C;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--black);
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 80px;
+}
+
+/* ── PAGES ── */
+.page { display: none; min-height: 100dvh; }
+.page.active { display: block; }
+
+/* ── TAB BAR — 4 tabs ── */
+.tab-bar {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 480px;
+  background: var(--white); border-top: 1px solid var(--sand);
+  display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+  z-index: 200;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.tab-btn {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 9px 2px 11px; cursor: pointer; border: none; background: none;
+  gap: 3px; color: var(--muted); transition: color 0.2s;
+}
+.tab-btn.active { color: var(--black); }
+.tab-btn .tab-icon { font-size: 18px; line-height: 1; }
+.tab-btn .tab-label { font-size: 8.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.tab-btn.active .tab-label { color: var(--red); }
+.tab-indicator {
+  position: absolute; top: 0; height: 2px; background: var(--red);
+  transition: left 0.3s cubic-bezier(.4,0,.2,1); width: 25%;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--black); padding: 44px 24px 48px;
+  position: relative; overflow: hidden;
+}
+.hero-glow { position:absolute; top:-50px; right:-50px; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(239,58,93,0.2) 0%,transparent 70%); pointer-events:none; }
+.hero-label { font-size:10px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--red); margin-bottom:18px; }
+.hero-logo { display:flex; align-items:center; gap:12px; margin-bottom:28px; }
+.hero-logo-text { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:26px; font-weight:500; color:var(--white); line-height:1; }
+.hero-logo-sub { font-size:8px; font-weight:600; letter-spacing:5px; color:var(--red); text-transform:uppercase; margin-top:3px; }
+.hero h1 { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:38px; font-weight:400; color:var(--white); line-height:1.15; margin-bottom:10px; }
+.hero h1 span { color:var(--red); font-style:normal; }
+.hero-sub { font-size:13px; font-weight:300; color:rgba(255,255,255,0.45); margin-bottom:28px; line-height:1.6; }
+.property-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); border-radius:100px; padding:8px 16px; font-size:12px; color:rgba(255,255,255,0.6); }
+.property-badge strong { color:var(--white); font-weight:600; }
+.prop-dot { width:6px; height:6px; border-radius:50%; background:var(--red); flex-shrink:0; }
+
+/* Page headers */
+.page-header { background:var(--black); padding:36px 24px 32px; position:relative; overflow:hidden; }
+.page-header::before { content:''; position:absolute; top:-40px; right:-40px; width:160px; height:160px; border-radius:50%; background:radial-gradient(circle,rgba(239,58,93,0.15) 0%,transparent 70%); }
+.ph-label { font-size:10px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--red); margin-bottom:6px; }
+.ph-title { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:32px; font-weight:400; color:var(--white); line-height:1.1; }
+
+/* ── CONTENT ── */
+.content { padding: 0 16px 32px; }
+.section { padding-top: 28px; }
+.section-eyebrow { font-size:9px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--red); margin-bottom:4px; }
+.section-title { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:500; color:var(--black); margin-bottom:14px; }
+.section-divider { height:1px; background:var(--sand); margin:28px 0 0; }
+
+/* ── CARDS ── */
+.card { background:var(--white); border-radius:16px; border:1px solid var(--sand); overflow:hidden; margin-bottom:10px; }
+.card-header { padding:15px 18px 12px; border-bottom:1px solid var(--cream); display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.card-title { font-size:13px; font-weight:600; color:var(--black); }
+.badge { font-size:9px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:3px 9px; border-radius:100px; flex-shrink:0; }
+.badge-default { background:var(--cream); color:var(--muted); }
+.badge-red { background:rgba(239,58,93,0.09); color:var(--red); }
+.badge-terra { background:rgba(196,120,90,0.12); color:var(--terra); }
+.card-body { padding:16px 18px; }
+
+/* ── UNIT NOTE ── */
+.unit-note { border-radius:14px; border:1.5px solid var(--terra); background:rgba(196,120,90,0.05); overflow:hidden; margin-bottom:10px; }
+.unit-note-header { padding:12px 16px 10px; display:flex; align-items:center; gap:10px; border-bottom:1px solid rgba(196,120,90,0.15); }
+.unit-note-icon { font-size:18px; flex-shrink:0; }
+.unit-note-title { font-size:12px; font-weight:700; color:var(--terra); }
+.unit-note-body { padding:12px 16px; font-size:13px; color:var(--black); line-height:1.65; }
+
+/* ── STEPS ── */
+.step-list { display:flex; flex-direction:column; gap:14px; }
+.step-item { display:flex; gap:12px; align-items:flex-start; }
+.step-num { width:26px; height:26px; border-radius:50%; background:var(--black); color:var(--white); font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+.step-num.red { background:var(--red); }
+.step-text { font-size:13px; line-height:1.55; color:var(--black); flex:1; }
+.step-text strong { font-weight:600; }
+.step-note { font-size:11px; color:var(--muted); display:block; margin-top:2px; }
+
+/* ── INFO ROWS ── */
+.info-row { display:flex; align-items:flex-start; justify-content:space-between; padding:11px 0; border-bottom:1px solid var(--cream); gap:12px; }
+.info-row:last-child { border-bottom:none; }
+.info-label { font-size:12px; color:var(--muted); font-weight:500; flex-shrink:0; }
+.info-value { font-size:13px; font-weight:600; color:var(--black); text-align:right; }
+.info-value.terra { color:var(--terra); }
+.info-value.light { font-weight:400; color:var(--muted); }
+
+/* ── PIN & WIFI ── */
+.pin-block { background:var(--black); border-radius:16px; padding:26px 20px; text-align:center; margin-bottom:10px; }
+.pin-label { font-size:9px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:10px; }
+.pin-number { font-size:50px; font-weight:700; color:var(--white); letter-spacing:10px; line-height:1; }
+.pin-hint { font-size:11px; color:rgba(255,255,255,0.3); margin-top:10px; }
+.wifi-block { background:var(--black); border-radius:16px; padding:20px; display:flex; align-items:center; gap:16px; margin-bottom:10px; }
+.wifi-label { font-size:9px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:3px; }
+.wifi-name { font-size:14px; font-weight:600; color:var(--white); margin-bottom:2px; }
+.wifi-pass { font-size:20px; font-weight:700; color:var(--red); letter-spacing:3px; }
+
+/* ── TIMELINE ── */
+.timeline { display:flex; flex-direction:column; }
+.tl-item { display:flex; gap:14px; }
+.tl-left { display:flex; flex-direction:column; align-items:center; width:34px; flex-shrink:0; }
+.tl-circle { width:34px; height:34px; border-radius:50%; background:var(--cream); border:2px solid var(--sand); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+.tl-circle.filled { background:var(--black); border-color:var(--black); }
+.tl-line { width:2px; flex:1; background:var(--sand); margin:4px 0; min-height:20px; }
+.tl-content { padding-bottom:20px; flex:1; padding-top:5px; }
+.tl-time { font-size:9px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--red); margin-bottom:2px; }
+.tl-title { font-size:13px; font-weight:600; color:var(--black); margin-bottom:3px; }
+.tl-desc { font-size:12px; color:var(--muted); line-height:1.5; }
+
+/* ── CONTACT CARD FULL WIDTH ── */
+.contact-card-full {
+  background: var(--black); border-radius: 16px; padding: 18px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 14px; margin-bottom: 10px;
+}
+.contact-card-full-title { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+.contact-card-full-sub { font-size: 11px; color: rgba(255,255,255,0.4); }
+.contact-wa-btn {
+  display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0;
+  background: #16a34a; color: var(--white); border-radius: 100px;
+  padding: 10px 16px; font-size: 12px; font-weight: 600; text-decoration: none;
+  white-space: nowrap;
+}
+
+/* ── CONTACTS ── */
+.contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.contact-card { background:var(--white); border:1px solid var(--sand); border-radius:14px; padding:14px; text-align:center; }
+.contact-emoji { font-size:24px; margin-bottom:8px; }
+.contact-name { font-size:12px; font-weight:600; color:var(--black); margin-bottom:1px; }
+.contact-role { font-size:10px; color:var(--muted); margin-bottom:10px; }
+.c-btn { display:block; border-radius:100px; padding:7px 12px; font-size:11px; font-weight:600; text-decoration:none; text-align:center; }
+.c-btn-dark { background:var(--black); color:var(--white); }
+.c-btn-green { background:#16a34a; color:var(--white); }
+
+/* ── AI CARD ── */
+.ai-card { background:linear-gradient(135deg,var(--black) 0%,#2a211d 100%); border-radius:16px; padding:22px; margin-bottom:10px; position:relative; overflow:hidden; }
+.ai-card::before { content:''; position:absolute; top:-30px; right:-30px; width:130px; height:130px; border-radius:50%; background:radial-gradient(circle,rgba(239,58,93,0.18) 0%,transparent 70%); }
+.ai-pill { display:inline-flex; align-items:center; gap:6px; background:rgba(239,58,93,0.12); border:1px solid rgba(239,58,93,0.25); border-radius:100px; padding:4px 10px; font-size:9px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--red); margin-bottom:12px; }
+.ai-dot { width:5px; height:5px; border-radius:50%; background:var(--red); animation:pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
+.ai-title { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:500; color:var(--white); margin-bottom:6px; }
+.ai-desc { font-size:12px; color:rgba(255,255,255,.45); line-height:1.6; margin-bottom:14px; }
+.ai-tags { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:16px; }
+.ai-tag { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); border-radius:100px; padding:3px 9px; font-size:10px; color:rgba(255,255,255,.5); }
+.ai-btn { display:inline-flex; align-items:center; gap:7px; background:var(--red); color:var(--white); border-radius:100px; padding:10px 18px; font-size:12px; font-weight:600; text-decoration:none; }
+
+/* ── TRANSPORT ── */
+.transfer-banner { background:var(--terra); border-radius:16px; padding:22px; margin-bottom:10px; position:relative; overflow:hidden; }
+.transfer-banner::after { content:'🚗'; position:absolute; right:16px; bottom:12px; font-size:48px; opacity:.2; }
+.tb-label { font-size:9px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-bottom:6px; }
+.tb-title { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:500; color:var(--white); margin-bottom:5px; }
+.tb-desc { font-size:12px; color:rgba(255,255,255,0.6); line-height:1.55; margin-bottom:14px; }
+.rate-chips { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:16px; }
+.rate-chip { background:rgba(255,255,255,0.14); border:1px solid rgba(255,255,255,0.2); border-radius:100px; padding:5px 12px; font-size:11px; color:var(--white); font-weight:500; }
+.tb-btn { display:inline-flex; align-items:center; gap:7px; background:var(--white); color:var(--terra); border-radius:100px; padding:10px 18px; font-size:12px; font-weight:700; text-decoration:none; }
+.ride-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; }
+.ride-card { background:var(--white); border:1px solid var(--sand); border-radius:14px; padding:13px; display:flex; align-items:flex-start; gap:10px; }
+.ride-icon { font-size:20px; flex-shrink:0; }
+.ride-name { font-size:12px; font-weight:600; color:var(--black); margin-bottom:2px; }
+.ride-desc { font-size:11px; color:var(--muted); line-height:1.4; }
+.parking-card { background:var(--black); border-radius:16px; padding:22px; margin-bottom:10px; position:relative; overflow:hidden; }
+.parking-card::before { content:'🅿️'; position:absolute; right:16px; top:16px; font-size:40px; opacity:.12; }
+.parking-label { font-size:9px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--red); margin-bottom:6px; }
+.parking-title { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:500; color:var(--white); margin-bottom:12px; }
+.parking-steps { display:flex; flex-direction:column; gap:10px; }
+.parking-step { display:flex; gap:10px; align-items:flex-start; }
+.parking-num { width:22px; height:22px; border-radius:50%; background:rgba(239,58,93,0.18); border:1px solid rgba(239,58,93,0.3); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--red); flex-shrink:0; margin-top:2px; }
+.parking-text { font-size:12px; color:rgba(255,255,255,0.65); line-height:1.55; flex:1; }
+.parking-text strong { color:var(--white); }
+.urgency-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(239,58,93,0.12); border:1px solid rgba(239,58,93,0.25); border-radius:100px; padding:4px 10px; font-size:9px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--red); margin-bottom:10px; }
+.parking-btn { display:inline-flex; align-items:center; gap:7px; background:var(--red); color:var(--white); border-radius:100px; padding:10px 18px; font-size:12px; font-weight:600; text-decoration:none; margin-top:16px; }
+
+/* ── EXPLORE ── */
+#map { width:100%; height:300px; border-radius:16px; overflow:hidden; border:1px solid var(--sand); margin-bottom:10px; }
+.zone-tabs { display:flex; gap:6px; margin-bottom:14px; overflow-x:auto; scrollbar-width:none; padding-bottom:2px; }
+.zone-tabs::-webkit-scrollbar { display:none; }
+.zone-tab { flex-shrink:0; padding:8px 16px; border-radius:100px; font-size:11px; font-weight:600; border:1.5px solid var(--sand); background:var(--white); cursor:pointer; color:var(--muted); transition:all 0.2s; white-space:nowrap; }
+.zone-tab.active { background:var(--black); color:var(--white); border-color:var(--black); }
+.zone-panel { display:none; }
+.zone-panel.active { display:block; }
+.map-legend { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+.legend-item { display:flex; align-items:center; gap:5px; font-size:10px; color:var(--muted); }
+.legend-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.place-row { background:var(--white); border:1px solid var(--sand); border-radius:12px; padding:13px 14px; display:flex; align-items:flex-start; gap:11px; margin-bottom:7px; }
+.place-emoji { font-size:20px; flex-shrink:0; line-height:1; margin-top:1px; }
+.place-name { font-size:13px; font-weight:600; color:var(--black); margin-bottom:2px; }
+.place-desc { font-size:11px; color:var(--muted); line-height:1.45; }
+.place-dist { margin-left:auto; font-size:9px; font-weight:600; color:var(--terra); background:rgba(196,120,90,0.1); padding:3px 8px; border-radius:100px; flex-shrink:0; white-space:nowrap; margin-top:1px; }
+.cat-label { font-size:10px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin:16px 0 10px; }
+.cat-label:first-child { margin-top:0; }
+.tour-card { background:var(--white); border:1px solid var(--sand); border-radius:14px; overflow:hidden; display:flex; margin-bottom:8px; }
+.tour-accent { width:5px; flex-shrink:0; }
+.tour-body { padding:14px 16px; flex:1; }
+.tour-type { font-size:9px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+.tour-name { font-size:14px; font-weight:600; color:var(--black); margin-bottom:4px; }
+.tour-desc { font-size:12px; color:var(--muted); line-height:1.5; margin-bottom:8px; }
+.tour-tags { display:flex; gap:5px; flex-wrap:wrap; }
+.tour-tag { font-size:10px; background:var(--cream); color:var(--muted); padding:3px 8px; border-radius:100px; font-weight:500; }
+.driver-banner { background:linear-gradient(135deg,#2a1810 0%,var(--black) 100%); border-radius:16px; padding:20px; margin-bottom:10px; display:flex; gap:14px; align-items:flex-start; }
+.driver-avatar { width:46px; height:46px; border-radius:50%; background:var(--terra); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; margin-top:2px; }
+.driver-meta {}
+.driver-role { font-size:9px; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:3px; }
+.driver-name { font-size:15px; font-weight:600; color:var(--white); margin-bottom:2px; }
+.driver-desc { font-size:11px; color:rgba(255,255,255,.4); line-height:1.5; }
+.driver-btn { display:inline-flex; align-items:center; gap:6px; background:var(--terra); color:var(--white); border-radius:100px; padding:8px 14px; font-size:11px; font-weight:600; text-decoration:none; margin-top:10px; }
+.ph-tours-header { background:linear-gradient(135deg, #0C6E8C 0%, #064e63 100%); border-radius:16px; padding:22px; margin-bottom:12px; position:relative; overflow:hidden; }
+.ph-tours-header::after { content:'🇵🇭'; position:absolute; right:16px; bottom:12px; font-size:52px; opacity:.25; }
+.pth-eyebrow { font-size:9px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-bottom:6px; }
+.pth-title { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:500; color:var(--white); margin-bottom:6px; line-height:1.1; }
+.pth-desc { font-size:12px; color:rgba(255,255,255,0.5); line-height:1.6; margin-bottom:16px; }
+.pth-btn { display:inline-flex; align-items:center; gap:7px; background:var(--white); color:#0C6E8C; border-radius:100px; padding:10px 18px; font-size:12px; font-weight:700; text-decoration:none; }
+.ph-dest-grid { display:flex; flex-direction:column; gap:8px; }
+.ph-dest-card { background:var(--white); border:1px solid var(--sand); border-radius:14px; overflow:hidden; display:flex; }
+.ph-dest-flag { width:52px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:28px; }
+.ph-dest-body { padding:13px 14px 13px 0; flex:1; }
+.ph-dest-region { font-size:9px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+.ph-dest-name { font-size:14px; font-weight:600; color:var(--black); margin-bottom:4px; }
+.ph-dest-desc { font-size:11px; color:var(--muted); line-height:1.5; margin-bottom:7px; }
+.ph-dest-tags { display:flex; gap:5px; flex-wrap:wrap; }
+.ph-dest-tag { font-size:10px; background:rgba(12,110,140,0.08); color:#0C6E8C; padding:3px 8px; border-radius:100px; font-weight:600; }
+
+/* ── SPACES PAGE ── */
+
+/* Photo strip */
+.photo-strip-wrap { position:relative; margin: 0 -16px; }
+.photo-strip {
+  display: flex; gap: 10px;
+  overflow-x: auto; scrollbar-width: none;
+  padding: 0 16px 10px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.photo-strip::-webkit-scrollbar { display:none; }
+.photo-slot {
+  flex-shrink: 0; width: 280px; height: 196px;
+  border-radius: 16px; overflow: hidden;
+  scroll-snap-align: start; position: relative;
+  background: var(--black); border: 1px solid rgba(255,255,255,0.05);
+}
+.photo-slot img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: block; transition: opacity 0.3s;
+}
+.photo-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #2a1810 0%, #1C1917 100%);
+  color: rgba(255,255,255,0.2);
+}
+.photo-placeholder svg { opacity: 0.25; margin-bottom: 8px; }
+.photo-placeholder span { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }
+.photo-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 20px 14px 12px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.55));
+  font-size: 11px; font-weight: 600; color: var(--white);
+  letter-spacing: 0.04em;
+}
+.photo-dot-row { display:flex; justify-content:center; gap:5px; padding: 4px 0 0; }
+.photo-dot { width:5px; height:5px; border-radius:50%; background:var(--sand); transition: background 0.2s, width 0.2s; }
+.photo-dot.active { background:var(--black); width:16px; }
+
+/* Amenity grid */
+.amenity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.amenity-card { background:var(--white); border:1px solid var(--sand); border-radius:14px; padding:14px 12px; display:flex; align-items:flex-start; gap:10px; }
+.amenity-icon { font-size:22px; flex-shrink:0; line-height:1; margin-top:1px; }
+.amenity-name { font-size:12px; font-weight:600; color:var(--black); margin-bottom:2px; }
+.amenity-desc { font-size:10px; color:var(--muted); line-height:1.4; }
+
+/* Review section */
+.review-header {
+  background: var(--black); border-radius:16px; padding:24px;
+  text-align:center; margin-bottom:10px; position:relative; overflow:hidden;
+}
+.review-header::before { content:'⭐'; position:absolute; left:-10px; top:-10px; font-size:80px; opacity:.06; line-height:1; }
+.review-header::after { content:'⭐'; position:absolute; right:-10px; bottom:-10px; font-size:80px; opacity:.06; line-height:1; }
+.review-eyebrow { font-size:9px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--red); margin-bottom:8px; }
+.review-title { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:500; color:var(--white); margin-bottom:8px; line-height:1.15; }
+.review-sub { font-size:12px; color:rgba(255,255,255,0.4); line-height:1.6; }
+
+.platform-list { display:flex; flex-direction:column; gap:8px; margin-bottom:10px; }
+.platform-btn {
+  display:flex; align-items:center; gap:14px;
+  border-radius:14px; padding:14px 16px; text-decoration:none;
+  border:1.5px solid transparent; transition: transform 0.15s, box-shadow 0.15s;
+}
+.platform-btn:active { transform:scale(0.98); }
+.platform-logo { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:20px; }
+.platform-info { flex:1; }
+.platform-name { font-size:13px; font-weight:700; margin-bottom:2px; }
+.platform-action { font-size:11px; opacity:0.7; }
+.platform-arrow { font-size:16px; opacity:0.4; }
+
+/* Platform colors */
+.platform-airbnb { background:#fff0ee; border-color:#ffd5cc; }
+.platform-airbnb .platform-name { color:#FF5A5F; }
+.platform-booking { background:#f0f4ff; border-color:#ccd8ff; }
+.platform-booking .platform-name { color:#003580; }
+.platform-google { background:#f8f8f8; border-color:#e0e0e0; }
+.platform-google .platform-name { color:#4285F4; }
+.platform-facebook { background:#f0f3ff; border-color:#ccd5ff; }
+.platform-facebook .platform-name { color:#1877F2; }
+.platform-agoda { background:#fff8f0; border-color:#ffeacc; }
+.platform-agoda .platform-name { color:#E8501B; }
+
+/* Book again */
+.book-hero {
+  background: linear-gradient(135deg, var(--black) 0%, #2a1810 100%);
+  border-radius:16px; padding:24px; margin-bottom:10px;
+  position:relative; overflow:hidden;
+}
+.book-hero::before { content:''; position:absolute; bottom:-40px; right:-40px; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle,rgba(196,120,90,0.2) 0%,transparent 70%); }
+.book-eyebrow { font-size:9px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--terra); margin-bottom:8px; }
+.book-title { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:500; color:var(--white); margin-bottom:8px; line-height:1.2; }
+.book-sub { font-size:12px; color:rgba(255,255,255,0.45); line-height:1.6; margin-bottom:18px; }
+.book-platforms { display:flex; flex-direction:column; gap:8px; }
+.book-platform-btn {
+  display:flex; align-items:center; gap:12px;
+  background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.1);
+  border-radius:12px; padding:12px 14px; text-decoration:none;
+  transition: background 0.15s;
+}
+.book-platform-btn:active { background:rgba(255,255,255,0.12); }
+.book-platform-logo { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0; background:rgba(255,255,255,0.08); }
+.book-platform-name { font-size:13px; font-weight:600; color:var(--white); flex:1; }
+.book-platform-tag { font-size:10px; font-weight:600; background:rgba(239,58,93,0.18); color:var(--red); padding:3px 8px; border-radius:100px; }
+.book-wa-btn { display:flex; align-items:center; gap:10px; background:var(--red); border-radius:12px; padding:14px 16px; text-decoration:none; margin-top:10px; }
+.book-wa-btn-text { flex:1; }
+.book-wa-btn-title { font-size:13px; font-weight:700; color:var(--white); }
+.book-wa-btn-sub { font-size:10px; color:rgba(255,255,255,0.65); margin-top:1px; }
+
+/* Other props v2 - no thumbnail */
+.other-prop-card-v2 {
+  background:var(--white); border:1px solid var(--sand); border-radius:14px;
+  padding:16px 18px; margin-bottom:8px;
+}
+.prop-info-v2 {}
+.prop-links { display:flex; gap:8px; flex-wrap:wrap; }
+.prop-link-btn {
+  display:inline-flex; align-items:center;
+  background:var(--black); color:var(--white);
+  border-radius:100px; padding:7px 14px;
+  font-size:11px; font-weight:600; text-decoration:none;
+  transition: background 0.15s;
+}
+.prop-link-btn:hover { background:#333; }
+.prop-type { font-size:9px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+.prop-name { font-size:13px; font-weight:700; color:var(--black); margin-bottom:3px; }
+.prop-loc { font-size:11px; color:var(--muted); margin-bottom:7px; }
+.prop-tags { display:flex; gap:5px; flex-wrap:wrap; }
+.prop-tag { font-size:10px; background:var(--cream); color:var(--muted); padding:2px 8px; border-radius:100px; font-weight:500; }
+.prop-tag.highlight { background:rgba(239,58,93,0.08); color:var(--red); }
+
+/* ── FOOTER ── */
+.footer { background:var(--black); padding:28px 20px; text-align:center; }
+.footer-logo { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:20px; color:var(--white); }
+.footer-sub { font-size:8px; font-weight:600; letter-spacing:5px; color:var(--red); text-transform:uppercase; margin-bottom:12px; margin-top:2px; }
+.footer-note { font-size:11px; color:rgba(255,255,255,0.3); line-height:1.6; }
+.footer-social { display:flex; justify-content:center; gap:12px; margin-top:16px; }
+.footer-social-btn { width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.07); display:flex; align-items:center; justify-content:center; font-size:16px; text-decoration:none; transition:background 0.15s; }
+.footer-social-btn:hover { background:rgba(255,255,255,0.13); }
+
+/* Leaflet popup */
+.leaflet-popup-content-wrapper { border-radius:10px !important; font-family:'Outfit',sans-serif; }
+.leaflet-popup-content { margin:10px 14px !important; font-size:12px !important; }
+.popup-name { font-weight:700; color:var(--black); margin-bottom:3px; }
+.popup-desc { color:var(--muted); font-size:11px; }
+.popup-tag { display:inline-block; font-size:9px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:2px 7px; border-radius:100px; margin-top:5px; background:var(--cream); color:var(--terra); }
+
+/* Animations */
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+.page.active > div:first-child > * { animation:fadeUp 0.4s ease both; }
+
+/* Shared WA icon */
+.wa-icon { display:inline-block; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════
+     UNIT CONFIG
+     Edit this block for each property
+     ═══════════════════════════════ -->
+<script>
+const UNIT = {
+  // ── Identity ──
+  number:       "1701",
+  building:     "The Median",
+  location:     "Apas, near IT Park",
+  tagline:      "Corner unit. City view. Balcony.",
+  mapCenter:    [10.3310, 123.9056],
+
+  // ── Times ──
+  checkIn:      "3:00 PM",
+  checkOut:     "12:00 NN",
+
+  // ── Access ──
+  wifi:         { name: "Sleepover Spaces", pass: "SleepoverSpaces0987!" },
+  pin:          "159357 ✱",
+
+  // ── Contacts ──
+  hostWhatsApp:  "https://wa.me/639215793968",
+  hostNumber:    "+63 921 579 3968",
+  buildingPhone: "",
+  facebookPage:  "https://www.facebook.com/SleepoverSpaces/",
+  instagramPage: "https://www.instagram.com/sleepoverspaces",
+
+  // ── Airport Transfers ──
+  airportOneWay:   "₱800",
+  airportRoundTrip: "₱1,400",
+
+  // ── Tours ──
+  toursWhatsApp: "https://wa.me/639215793968",
+  toursName:     "Sleepover Spaces Travel & Tours",
+
+  // ── Photos ──
+  // Replace URLs with your actual hosted images (Cloudinary, Google Photos direct link, etc.)
+  // Aspect ratio: roughly 280×196 (landscape). Add as many as you like.
+  photos: [
+    { url: "", caption: "Balcony — city view" },
+    { url: "", caption: "Master bedroom" },
+    { url: "", caption: "Living & workspace" },
+    { url: "", caption: "Kitchen" },
+    { url: "", caption: "Bathroom" },
+    { url: "", caption: "Building pool" },
+  ],
+
+  // ── Building amenities ──
+  buildingAmenities: [
+    { icon:"🏊", name:"Swimming Pool",          desc:"3rd floor · Open 6:00 AM to 8:00 PM" },
+    { icon:"🏓", name:"Entertainment Center",    desc:"3rd floor · Ping-pong table and games" },
+    { icon:"📚", name:"Library",                 desc:"3rd floor · Reading lounge" },
+    { icon:"🌇", name:"Viewing Decks",           desc:"15th and 26th floors · City panorama" },
+    { icon:"🛋️", name:"Lobby Lounge",            desc:"Free WiFi · Ask reception for password" },
+    { icon:"🚿", name:"Common Showers",          desc:"Near pool area on 3rd floor" },
+    { icon:"🛒", name:"24/7 Convenience Store",  desc:"Ground floor" },
+    { icon:"👕", name:"Laundry",                 desc:"Ground floor" },
+    { icon:"💧", name:"Water Refilling Station", desc:"Ground floor" },
+    { icon:"🔒", name:"24/7 Security",           desc:"Guard on duty round the clock" },
+    { icon:"🛗", name:"High-Speed Lifts",         desc:"Multiple elevators, minimal wait" },
+    { icon:"📦", name:"Reception Desk",          desc:"Accepts deliveries on your behalf" },
+    { icon:"🚬", name:"Smoking Area",            desc:"Lobby level · Please do not smoke on balcony or pool area" },
+  ],
+
+  // ── Unit highlights ──
+  unitHighlights: [
+    { icon:"🌆", name:"City Skyline View",    desc:"Floor-to-ceiling corner windows" },
+    { icon:"🪟", name:"Private Balcony",       desc:"Outdoor seating, great at sunset" },
+    { icon:"🛋️", name:"Sofa Bed",              desc:"Pulls out for a 3rd guest" },
+    { icon:"💻", name:"Work-Ready",            desc:"Desk + sofa + balcony seating" },
+    { icon:"🍳", name:"Equipped Kitchen",      desc:"Induction cooker, ref, cookware" },
+    { icon:"📶", name:"Fast WiFi",             desc:"Fibre connection" },
+  ],
+
+  // ── Review links ──
+  reviewLinks: {
+    airbnb:   "https://airbnb.com/h/sleepoverspaces",
+    booking:  "https://www.booking.com/hotel/ph/breathtaking-views-of-cebu-city-at-the-median.html",
+    facebook: "https://www.facebook.com/SleepoverSpaces/reviews",
+  },
+
+  // ── Booking links ──
+  bookingLinks: {
+    airbnb:  "https://airbnb.com/h/sleepoverspaces",
+    booking: "https://www.booking.com/hotel/ph/breathtaking-views-of-cebu-city-at-the-median.html",
+    vrbo:    "https://www.vrbo.com/en-sg/p20191890",
+  },
+
+  // ── Other properties in the portfolio ──
+  otherProperties: [
+    {
+      name:     "Unit 1122 — The Median",
+      location: "Apas, near IT Park",
+      tags:     ["Same building", "Pool view", "2 guests"],
+      highlight: "Modern farmhouse style",
+      links: [
+        { label:"Airbnb", url:"https://airbnb.com/h/medianmodernfarmhouse" },
+        { label:"Booking.com", url:"https://www.booking.com/hotel/ph/modern-farmhouse-studio-at-the-median-near-it-park.html" },
+      ]
+    },
+    {
+      name:     "Avida Riala Tower 2",
+      location: "Cebu IT Park",
+      tags:     ["Inside IT Park", "2 guests", "Kitchen island"],
+      highlight: "Great for digital nomads",
+      links: [
+        { label:"Airbnb", url:"https://airbnb.com/h/ss-rialatower2" },
+        { label:"Booking.com", url:"https://www.booking.com/hotel/ph/stylish-studio-in-it-park-near-ayala-central-bloc.html" },
+        { label:"VRBO", url:"https://www.vrbo.com/en-sg/p20259509" },
+      ]
+    },
+    {
+      name:     "Avida Riala Tower 3",
+      location: "Cebu IT Park",
+      tags:     ["Inside IT Park", "Pool", "Netflix"],
+      highlight: "",
+      links: [
+        { label:"Airbnb", url:"https://airbnb.com/h/rialatower3" },
+        { label:"Booking.com", url:"https://www.booking.com/hotel/ph/cozy-studio-with-pool-and-netflix-at-cebu-it-park.html" },
+      ]
+    },
+    {
+      name:     "Plumera Mactan",
+      location: "Mactan — Near Airport",
+      tags:     ["Near airport", "2 guests"],
+      highlight: "Perfect for early flights",
+      links: [
+        { label:"Airbnb", url:"https://airbnb.com/h/plumeram" },
+        { label:"Booking.com", url:"https://www.booking.com/hotel/ph/cozy-plumera-studio-near-mactan-airport.html" },
+      ]
+    },
+  ],
+
+  // ── Unit-specific notes ──
+  specialNotes: [
+    {
+      icon: "🛋️",
+      title: "Extra Bed for Your 3rd Guest",
+      body: "Pull up the bottom part of the sofa to open the bed. Pillows are already there and we've added an extra towel for your 3rd guest."
+    },
+    {
+      icon: "💡",
+      title: "About the Lights",
+      body: "If a light switch doesn't respond, turn it on and off twice in a row without a pause. That usually does it."
+    },
+    {
+      icon: "🗑️",
+      title: "Trash & Garbage",
+      body: "The collection schedule is posted on the door. Please don't leave trash out in the hallway. You can bring bags downstairs using the service elevator — the one closest to the unit. The garbage area is near the water refilling station, behind the convenience store."
+    }
+  ],
+
+  // ── Appliances ──
+  appliances: [
+    { icon:"🌡️", label:"Aircon",              value:"Remote is below the aircon unit" },
+    { icon:"🚿", label:"Water heater",         value:"Heats up with enough water pressure" },
+    { icon:"🍳", label:"Induction cooker",     value:"Press Power → set level" },
+    { icon:"📺", label:"Netflix / Disney+",    value:"Use Median 1701 account · Message us if it asks for a code" },
+  ]
+};
+</script>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 1 — YOUR STAY
+══════════════════════════════════════════════ -->
+<div class="page active" id="page-stay">
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-label">Guest Check-in Guide</div>
+    <div class="hero-logo">
+      <svg width="32" viewBox="0 0 60 50" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="56" height="32" rx="5" fill="none" stroke="#FFF" stroke-width="2.2"/>
+        <line x1="2" y1="12" x2="58" y2="12" stroke="#FFF" stroke-width="1.2"/>
+        <rect x="7" y="4" width="18" height="13" rx="3.5" fill="none" stroke="#FFF" stroke-width="1.5"/>
+        <rect x="35" y="4" width="18" height="13" rx="3.5" fill="none" stroke="#FFF" stroke-width="1.5"/>
+        <path d="M2 28 Q30 33 58 28" fill="none" stroke="#C4785A" stroke-width="1.2"/>
+        <line x1="-1" y1="34" x2="-1" y2="43" stroke="#FFF" stroke-width="2" stroke-linecap="round"/>
+        <line x1="61" y1="34" x2="61" y2="43" stroke="#FFF" stroke-width="2" stroke-linecap="round"/>
+        <line x1="-3" y1="34" x2="63" y2="34" stroke="#FFF" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <div><div class="hero-logo-text">Sleepover</div><div class="hero-logo-sub">Spaces</div></div>
+    </div>
+    <h1>Welcome,<br><span>let's get you settled.</span></h1>
+    <p class="hero-sub">Everything you need for check-in, your stay, and departure.</p>
+    <div class="property-badge"><div class="prop-dot"></div><span>Unit <strong id="badge-unit">—</strong> · <span id="badge-building">—</span></span></div>
+  </div>
+  <div class="content">
+    <div class="section">
+      <div class="section-eyebrow">01 — Arrival</div>
+      <div class="section-title">Checking In</div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">At the Lobby</div><div class="badge badge-default">Present to Guard</div></div>
+        <div class="card-body">
+          <div class="step-list">
+            <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Approach the front desk</strong> and say you have a reservation with Sleepover Spaces.<span class="step-note">Say: "I'm checking in with Sleepover Spaces, Unit <span class="unit-num-inline">—</span>."</span></div></div>
+            <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Present a valid government-issued ID</strong> — passport, driver's license, or national ID. One per adult guest.</div></div>
+            <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Fill the visitor logbook</strong> if asked — name, unit number, duration of stay.</div></div>
+            <div class="step-item"><div class="step-num">4</div><div class="step-text"><strong>Head to the elevator.</strong> Your door has a keypad lock — tap the front of the lock with your palm to reveal the numbers, enter your code, then press ✱.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="info-row"><div class="info-label">Check-in from</div><div class="info-value" id="checkin-time">—</div></div>
+          <div class="info-row"><div class="info-label">Check-out by</div><div class="info-value" id="checkout-time">—</div></div>
+          <div class="info-row"><div class="info-label">Early / late check-in</div><div class="info-value terra">Message us · Subject to availability</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+    <div class="section">
+      <div class="section-eyebrow">02 — Access</div>
+      <div class="section-title">WiFi & Door</div>
+      <div class="wifi-block">
+        <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.35)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.038a5.25 5.25 0 0 1 7.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 0 1 1.06 0Z"/></svg>
+        <div><div class="wifi-label">WiFi Network</div><div class="wifi-name" id="wifi-name">—</div><div class="wifi-pass" id="wifi-pass">—</div></div>
+      </div>
+      <div class="pin-block">
+        <div class="pin-label">Door PIN Code</div>
+        <div class="pin-number" id="door-pin">—</div>
+        <div class="pin-hint">Tap the front of the lock with your palm to reveal the numbers · Enter code · Press ✱ to confirm · Pull or push firmly to close — it will make a sound if the door is still open</div>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+    <div class="section">
+      <div class="section-eyebrow">03 — Your Unit</div>
+      <div class="section-title">Good to Know</div>
+      <div id="unit-notes-container"></div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Quick Appliance Guide</div></div>
+        <div class="card-body" id="appliances-list"></div>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+    <div class="section">
+      <div class="section-eyebrow">04 — Support</div>
+      <div class="section-title">Need Help?</div>
+      <div class="contact-card-full">
+        <div class="contact-card-full-left">
+          <div class="contact-card-full-title">Questions? We're here.</div>
+          <div class="contact-card-full-sub">Available 9:00 AM – 6:00 PM · WhatsApp</div>
+        </div>
+        <a id="host-wa-btn" href="#" class="contact-wa-btn">
+          <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          Message Us
+        </a>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+    <div class="section">
+      <div class="section-eyebrow">05 — Departure</div>
+      <div class="section-title">Checking Out</div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Checkout by 12:00 NN</div><div class="badge badge-red">Important</div></div>
+        <div class="card-body">
+          <div class="timeline">
+            <div class="tl-item"><div class="tl-left"><div class="tl-circle">🌅</div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-time">Morning of checkout</div><div class="tl-title">You'll get a reminder</div><div class="tl-desc">We'll send a checkout reminder through the same app you booked on.</div></div></div>
+            <div class="tl-item"><div class="tl-left"><div class="tl-circle">🧹</div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-time">Before leaving</div><div class="tl-title">Quick tidy-up</div><div class="tl-desc">Turn off aircon and lights · Towels in bathroom · Rinse dishes · Return sofa bed if used · No need to unplug anything — just please don't unplug the ref if there's still food inside.</div></div></div>
+            <div class="tl-item"><div class="tl-left"><div class="tl-circle">🚪</div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-time">When leaving</div><div class="tl-title">No key to return</div><div class="tl-desc">Pull the door shut — it locks automatically.</div></div></div>
+            <div class="tl-item"><div class="tl-left"><div class="tl-circle filled">⭐</div></div><div class="tl-content"><div class="tl-time">After checkout</div><div class="tl-title">Leave us a review</div><div class="tl-desc">Leave a review on whichever platform you booked on — or find all our listings in the <strong>Spaces</strong> tab. It means a lot to us. 🙏</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><div class="footer-logo">Sleepover</div><div class="footer-sub">Spaces</div><div class="footer-note">Questions? WhatsApp us at <strong style="color:rgba(255,255,255,0.5);" id="footer-number">—</strong></div><div class="footer-social">
+    <a id="fb-footer" href="#" class="footer-social-btn" target="_blank" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(255,255,255,0.6)"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+    <a id="ig-footer" href="#" class="footer-social-btn" target="_blank" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(255,255,255,0.6)"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg></a>
+    <a id="wa-footer" href="#" class="footer-social-btn" target="_blank" aria-label="WhatsApp"><svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(255,255,255,0.6)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></a>
+  </div></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 2 — TRANSPORT
+══════════════════════════════════════════════ -->
+<div class="page" id="page-transport">
+  <div class="page-header"><div class="ph-label">Getting Around</div><div class="ph-title">Transport &<br>Transfers</div></div>
+  <div class="content">
+    <div class="section">
+      <div class="section-eyebrow">Airport Transfers</div>
+      <div class="section-title">Need a Pickup or Drop-off?</div>
+      <div class="transfer-banner">
+        <div class="tb-label">Arranged via WhatsApp · On Request</div>
+        <div class="tb-title">Airport transfers available</div>
+        <div class="tb-desc">Message us on WhatsApp and we'll arrange a transfer for you. Available for both arrivals and departures.</div>
+        <div class="rate-chips"><span class="rate-chip" id="rate-oneway">One-way: ₱800</span><span class="rate-chip" id="rate-roundtrip">Round trip: ₱1,400</span></div>
+        <a id="driver-wa-btn" href="#" class="tb-btn"><svg width="14" height="14" fill="#C4785A" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> Book via WhatsApp</a>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+    <div class="section">
+      <div class="section-eyebrow">Parking</div>
+      <div class="section-title">Need a Slot?</div>
+      <div class="parking-card">
+        <div class="urgency-badge">⚠ Request at least 3 days before arrival</div>
+        <div class="parking-title">Parking is Available</div>
+        <div class="parking-steps">
+          <div class="parking-step"><div class="parking-num">1</div><div class="parking-text"><strong>Message us on WhatsApp</strong> as early as possible. Slots are not always available last-minute.</div></div>
+          <div class="parking-step"><div class="parking-num">2</div><div class="parking-text"><strong>Rates are typically ₱250–₱300 per night</strong>, paid directly to the slot owner.</div></div>
+          <div class="parking-step"><div class="parking-num">3</div><div class="parking-text"><strong>We'll connect you with the slot owner</strong> directly — they'll provide all the details for access and payment.</div></div>
+        </div>
+        <a id="parking-wa-btn" href="#" class="parking-btn"><svg width="13" height="13" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> Request Parking (3+ days ahead)</a>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+    <div class="section">
+      <div class="section-eyebrow">Self-Service Rides</div>
+      <div class="section-title">Ride-Hailing Apps</div>
+      <div class="ride-grid">
+        <div class="ride-card"><div class="ride-icon">🟢</div><div><div class="ride-name">Grab / Green GSM</div><div class="ride-desc">Most reliable car rides in Cebu.</div></div></div>
+        <div class="ride-card"><div class="ride-icon">🟡</div><div><div class="ride-name">Angkas / Maxim / Move It</div><div class="ride-desc">Motorcycle — fastest for short trips.</div></div></div>
+        <div class="ride-card"><div class="ride-icon">🚌</div><div><div class="ride-name">Modern Bus</div><div class="ride-desc">Terminal is inside Cebu IT Park.</div></div></div>
+        <div class="ride-card"><div class="ride-icon">🚐</div><div><div class="ride-name">V-Hire / Jeepney</div><div class="ride-desc">Local routes. Very affordable.</div></div></div>
+        <div class="ride-card"><div class="ride-icon">🚕</div><div><div class="ride-name">Metered Taxi</div><div class="ride-desc">Flag down on main roads.</div></div></div>
+      </div>
+      <div class="card"><div class="card-body">
+        <div class="info-row"><div class="info-label">🚶 Walking</div><div class="info-value light">IT Park &amp; Ayala Central Bloc</div></div>
+        <div class="info-row"><div class="info-label">✈️ Airport</div><div class="info-value light">Message us to arrange a transfer</div></div>
+        <div class="info-row"><div class="info-label">⛴️ Bohol / Mactan</div><div class="info-value light">Pier 1 — fast craft or ferry</div></div>
+      </div></div>
+    </div>
+  </div>
+  <div class="footer"><div class="footer-logo">Sleepover</div><div class="footer-sub">Spaces</div><div class="footer-note">Need a ride? WhatsApp us anytime.</div></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 3 — EXPLORE
+══════════════════════════════════════════════ -->
+<div class="page" id="page-explore">
+  <div class="page-header"><div class="ph-label">Local & Beyond</div><div class="ph-title">Explore Cebu<br>& the Philippines</div></div>
+  <div class="content">
+    <div class="section">
+      <div id="map"></div>
+      <div class="map-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div> You are here</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#EF3A5D"></div> Food</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#C4785A"></div> Sights</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#1C1917"></div> Shopping</div>
+      </div>
+      <div class="zone-tabs">
+        <button class="zone-tab active" onclick="switchZone('nearby',this)">📍 Nearby</button>
+        <button class="zone-tab" onclick="switchZone('daytrips',this)">🌅 Day Trips</button>
+        <button class="zone-tab" onclick="switchZone('philippines',this)">🇵🇭 Philippines</button>
+      </div>
+      <div class="zone-panel active" id="zone-nearby">
+        <div class="cat-label">🍽️ Eat &amp; Drink</div>
+        <div class="place-row"><div class="place-emoji">🥩</div><div><div class="place-name">House of Lechon</div><div class="place-desc">Iconic Cebu lechon. A must-try.</div></div><div class="place-dist">~10 min</div></div>
+        <div class="place-row"><div class="place-emoji">🍜</div><div><div class="place-name">Sugbo Mercado</div><div class="place-desc">IT Park food market with dozens of stalls. Great evenings.</div></div><div class="place-dist">IT Park</div></div>
+        <div class="place-row"><div class="place-emoji">☕</div><div><div class="place-name">Pickup Coffee</div><div class="place-desc">About 3 minutes walk from the building.</div></div><div class="place-dist">~3 min walk</div></div>
+        <div class="place-row"><div class="place-emoji">☕</div><div><div class="place-name">Bo's Coffee</div><div class="place-desc">Homegrown Cebu chain. Great for working.</div></div><div class="place-dist">IT Park</div></div>
+        <div class="place-row"><div class="place-emoji">🍳</div><div><div class="place-name">Yolk (Oakridge)</div><div class="place-desc">Popular brunch spot nearby.</div></div><div class="place-dist">~5 min</div></div>
+        <div class="place-row"><div class="place-emoji">⭐</div><div><div class="place-name">Soccarat</div><div class="place-desc">Michelin-recognized restaurant in Cebu.</div></div><div class="place-dist">~10 min</div></div>
+        <div class="place-row"><div class="place-emoji">🍽️</div><div><div class="place-name">Dean &amp; DeLuca at 38 Park</div><div class="place-desc">Upscale cafe and dining.</div></div><div class="place-dist">~10 min</div></div>
+        <div class="place-row"><div class="place-emoji">🍷</div><div><div class="place-name">Anzani Restaurant</div><div class="place-desc">Upscale Mediterranean, sea views.</div></div><div class="place-dist">~15 min</div></div>
+        <div class="cat-label">🗺️ See &amp; Do</div>
+        <div class="place-row"><div class="place-emoji">🏛️</div><div><div class="place-name">Basilica del Santo Niño</div><div class="place-desc">Oldest Catholic church in the Philippines.</div></div><div class="place-dist">~15 min</div></div>
+        <div class="place-row"><div class="place-emoji">⛪</div><div><div class="place-name">Magellan's Cross</div><div class="place-desc">Historic landmark right beside the Basilica.</div></div><div class="place-dist">~15 min</div></div>
+        <div class="place-row"><div class="place-emoji">🛕</div><div><div class="place-name">Temple of Leah</div><div class="place-desc">Grand hilltop monument — Cebu's own "Taj Mahal."</div></div><div class="place-dist">~20 min</div></div>
+        <div class="place-row"><div class="place-emoji">🛤️</div><div><div class="place-name">Colon Street</div><div class="place-desc">The oldest street in the Philippines. Historic downtown Cebu.</div></div><div class="place-dist">~15 min</div></div>
+        <div class="cat-label">🛍️ Shopping</div>
+        <div class="place-row"><div class="place-emoji">🏬</div><div><div class="place-name">Ayala Center Cebu</div><div class="place-desc">Premier mall with dining, cinema, and retail.</div></div><div class="place-dist">~10 min</div></div>
+        <div class="place-row"><div class="place-emoji">🏢</div><div><div class="place-name">Ayala Central Bloc</div><div class="place-desc">Walkable from IT Park. Restaurants, bars, shops.</div></div><div class="place-dist">Walking</div></div>
+        <div class="place-row"><div class="place-emoji">🏪</div><div><div class="place-name">SM City Cebu</div><div class="place-desc">Large mall near North Reclamation Area.</div></div><div class="place-dist">~10 min</div></div>
+        <div class="place-row"><div class="place-emoji">🌊</div><div><div class="place-name">SM Seaside City</div><div class="place-desc">South Cebu mall with great sea views.</div></div><div class="place-dist">~20 min</div></div>
+        <div class="place-row"><div class="place-emoji">🛒</div><div><div class="place-name">Landers Superstore</div><div class="place-desc">Best grocery and warehouse store in Cebu.</div></div><div class="place-dist">~10 min</div></div>
+        <div class="place-row"><div class="place-emoji">🛒</div><div><div class="place-name">S&amp;R Members' Only</div><div class="place-desc">Membership warehouse club, great value.</div></div><div class="place-dist">~15 min</div></div>
+        <div class="place-row"><div class="place-emoji">🏬</div><div><div class="place-name">Robinsons Galleria</div><div class="place-desc">Large mall, good variety of stores.</div></div><div class="place-dist">~15 min</div></div>
+      </div>
+      <div class="zone-panel" id="zone-daytrips">
+        <div class="driver-banner"><div class="driver-avatar">🚗</div><div class="driver-meta"><div class="driver-role">For all Cebu day trips</div><div class="driver-name">Arranged via WhatsApp</div><div class="driver-desc">South Cebu, highlands, Bohol ferry drop-off, city tours</div><a id="daytrips-driver-btn" href="#" class="driver-btn"><svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> Message Us on WhatsApp</a></div></div>
+        <div class="tour-card"><div class="tour-accent" style="background:var(--terra)"></div><div class="tour-body"><div class="tour-type">Highlands · ~30 min drive</div><div class="tour-name">Tops & Busay Viewpoint</div><div class="tour-desc">Best aerial view of Cebu. Worth it at sunset.</div><div class="tour-tags"><span class="tour-tag">2–3 hrs</span><span class="tour-tag">City view</span><span class="tour-tag">Sunset</span></div></div></div>
+        <div class="tour-card"><div class="tour-accent" style="background:var(--black)"></div><div class="tour-body"><div class="tour-type">South Cebu · Full Day</div><div class="tour-name">Kawasan Falls & South Route</div><div class="tour-desc">Oslob whale sharks, canyoneering, Tumalog Falls.</div><div class="tour-tags"><span class="tour-tag">Full day</span><span class="tour-tag">Adventure</span></div></div></div>
+        <div class="tour-card"><div class="tour-accent" style="background:var(--red)"></div><div class="tour-body"><div class="tour-type">Island Day Trip · Pier 1 Ferry</div><div class="tour-name">Bohol</div><div class="tour-desc">Chocolate Hills, Tarsier Sanctuary, Loboc River Cruise.</div><div class="tour-tags"><span class="tour-tag">Full day</span><span class="tour-tag">Island</span><span class="tour-tag">Wildlife</span></div></div></div>
+        <div class="tour-card"><div class="tour-accent" style="background:#0ea5e9"></div><div class="tour-body"><div class="tour-type">Beaches · ~35 min drive</div><div class="tour-name">Mactan Island</div><div class="tour-desc">Shangri-La, Crimson, or Hadsan public beach.</div><div class="tour-tags"><span class="tour-tag">Half/full day</span><span class="tour-tag">Beach</span></div></div></div>
+      </div>
+      <div class="zone-panel" id="zone-philippines">
+        <div class="ph-tours-header"><div class="pth-eyebrow">Sleepover Spaces Travel & Tours</div><div class="pth-title">Go further.<br>Explore the Philippines.</div><div class="pth-desc">From Cebu, you're perfectly placed to reach some of the best islands in the world. We can arrange flights, accommodations, and full itineraries.</div><a id="ph-tours-btn" href="#" class="pth-btn"><svg width="14" height="14" fill="#0C6E8C" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> Inquire on WhatsApp</a></div>
+        <div class="ph-dest-grid">
+          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(12,110,140,0.06)">🏝️</div><div class="ph-dest-body"><div class="ph-dest-region">Palawan</div><div class="ph-dest-name">El Nido & Coron</div><div class="ph-dest-desc">Limestone cliffs, hidden lagoons, clearest water on earth.</div><div class="ph-dest-tags"><span class="ph-dest-tag">~1 hr flight</span><span class="ph-dest-tag">Island hopping</span></div></div></div>
+          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(239,58,93,0.05)">🌊</div><div class="ph-dest-body"><div class="ph-dest-region">Mindanao</div><div class="ph-dest-name">Siargao</div><div class="ph-dest-desc">Surf capital of PH. Cloud 9, rock pools, island hopping.</div><div class="ph-dest-tags"><span class="ph-dest-tag">~50 min flight</span><span class="ph-dest-tag">Surfing</span></div></div></div>
+          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(196,120,90,0.07)">🌴</div><div class="ph-dest-body"><div class="ph-dest-region">Aklan</div><div class="ph-dest-name">Boracay</div><div class="ph-dest-desc">White Beach, watersports, world-class sunsets.</div><div class="ph-dest-tags"><span class="ph-dest-tag">~1 hr flight</span><span class="ph-dest-tag">Beach</span></div></div></div>
+          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(16,163,74,0.06)">🦈</div><div class="ph-dest-body"><div class="ph-dest-region">Leyte</div><div class="ph-dest-name">Sogod Bay</div><div class="ph-dest-desc">Whale sharks, Sohoton Cave, underrated diving.</div><div class="ph-dest-tags"><span class="ph-dest-tag">Ferry + bus</span><span class="ph-dest-tag">Diving</span></div></div></div>
+          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(12,110,140,0.06)">🌋</div><div class="ph-dest-body"><div class="ph-dest-region">Bicol / Batanes</div><div class="ph-dest-name">Mayon & Batanes</div><div class="ph-dest-desc">Perfect volcanic cone and rolling northern hills.</div><div class="ph-dest-tags"><span class="ph-dest-tag">Via Manila</span><span class="ph-dest-tag">Scenic</span></div></div></div>
+          <div class="ph-dest-card"><div class="ph-dest-flag" style="background:rgba(239,58,93,0.05)">🏙️</div><div class="ph-dest-body"><div class="ph-dest-region">Luzon</div><div class="ph-dest-name">Manila & Tagaytay</div><div class="ph-dest-desc">Intramuros, BGC, Taal Volcano ridge views.</div><div class="ph-dest-tags"><span class="ph-dest-tag">~1.5 hr flight</span><span class="ph-dest-tag">City</span></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><div class="footer-logo">Sleepover</div><div class="footer-sub">Spaces</div><div class="footer-note">Have a wonderful stay in Cebu and beyond! 🌺</div></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 4 — OUR SPACES
+     (Photos · Amenities · Reviews · Book Again)
+══════════════════════════════════════════════ -->
+<div class="page" id="page-spaces">
+  <div class="page-header">
+    <div class="ph-label">Your Unit & More</div>
+    <div class="ph-title" id="spaces-header-title">—</div>
+  </div>
+
+  <div class="content">
+
+    <!-- UNIT HIGHLIGHTS -->
+    <div class="section">
+      <div class="section-eyebrow">01 — Features</div>
+      <div class="section-title">Unit Highlights</div>
+      <div class="amenity-grid" id="unit-highlights-grid"></div>
+    </div>
+
+    <!-- BUILDING AMENITIES -->
+    <div class="section">
+      <div class="section-eyebrow">02 — Building</div>
+      <div class="section-title">Building Amenities</div>
+      <div class="amenity-grid" id="building-amenities-grid"></div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- LEAVE A REVIEW -->
+    <div class="section">
+      <div class="section-eyebrow">03 — Reviews</div>
+      <div class="section-title">Loved your stay?</div>
+
+      <div class="review-header">
+        <div class="review-eyebrow">Your Review Means Everything</div>
+        <div class="review-title">Loved your stay?<br>Leave us a review. 🙏</div>
+        <div class="review-sub">We're a small independent operation — every review directly helps us grow and keep delivering a great experience. Takes less than 2 minutes. Leave it on whichever platform you booked on.</div>
+      </div>
+
+      <div class="platform-list" id="review-platform-list"></div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- BOOK AGAIN -->
+    <div class="section">
+      <div class="section-eyebrow">04 — Come Back</div>
+      <div class="section-title">Book Your Next Stay</div>
+
+      <div class="book-hero">
+        <div class="book-eyebrow">Book Direct or on Any Platform</div>
+        <div class="book-title">We'd love to<br>have you back.</div>
+        <div class="book-sub">Book this unit again or explore our other spaces across Cebu. Find us on Airbnb and Booking.com.</div>
+        <div class="book-platforms" id="book-platform-list"></div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- OTHER PROPERTIES -->
+    <div class="section">
+      <div class="section-eyebrow">05 — Portfolio</div>
+      <div class="section-title">Our Other Spaces</div>
+      <div class="other-props" id="other-props-list"></div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-logo">Sleepover</div>
+    <div class="footer-sub">Spaces</div>
+    <div class="footer-note">Thank you for staying with us. We hope to see you again! 🌺</div>
+    <div class="footer-social">
+      <a id="fb-footer2" href="#" class="footer-social-btn" target="_blank" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(255,255,255,0.6)"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+      <a id="ig-footer2" href="#" class="footer-social-btn" target="_blank" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(255,255,255,0.6)"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg></a>
+      <a id="wa-footer2" href="#" class="footer-social-btn" target="_blank" aria-label="WhatsApp"><svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(255,255,255,0.6)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></a>
+    </div>
+  </div>
+</div>
+
+
+<!-- TAB BAR -->
+<div class="tab-bar" id="tab-bar">
+  <div class="tab-indicator" id="tab-indicator"></div>
+  <button class="tab-btn active"   onclick="switchPage('stay',0)">     <div class="tab-icon">🏠</div><div class="tab-label">Stay</div></button>
+  <button class="tab-btn"         onclick="switchPage('transport',1)"> <div class="tab-icon">🚗</div><div class="tab-label">Transport</div></button>
+  <button class="tab-btn"         onclick="switchPage('explore',2)">   <div class="tab-icon">🗺️</div><div class="tab-label">Explore</div></button>
+  <button class="tab-btn"         onclick="switchPage('spaces',3)">    <div class="tab-icon">✨</div><div class="tab-label">Spaces</div></button>
+</div>
+
+
+<script>
+// WA svg helper
+const WA_SVG = `<svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>`;
+
+// ─── POPULATE ────────────────────────────────────────
+function populate() {
+  // Basic
+  document.getElementById('badge-unit').textContent = UNIT.number;
+  document.getElementById('badge-building').textContent = UNIT.building + ', ' + UNIT.location;
+  document.querySelectorAll('.unit-num-inline').forEach(el => el.textContent = UNIT.number);
+  document.getElementById('checkin-time').textContent = UNIT.checkIn;
+  document.getElementById('checkout-time').textContent = UNIT.checkOut;
+  document.getElementById('wifi-name').textContent = UNIT.wifi.name;
+  document.getElementById('wifi-pass').textContent = UNIT.wifi.pass;
+  document.getElementById('door-pin').textContent = UNIT.pin;
+  document.getElementById('footer-number').textContent = UNIT.hostNumber;
+
+  const wa = msg => UNIT.hostWhatsApp + '?text=' + encodeURIComponent(msg);
+  document.getElementById('host-wa-btn').href = UNIT.hostWhatsApp;
+  document.getElementById('parking-wa-btn').href = wa('Hi! I\'m checking into Unit ' + UNIT.number + ' and I\'d like to request a parking slot.');
+
+  // Social footers
+  ['fb-footer','fb-footer2'].forEach(id => { const el=document.getElementById(id); if(el) el.href=UNIT.facebookPage; });
+  ['ig-footer','ig-footer2'].forEach(id => { const el=document.getElementById(id); if(el) el.href=UNIT.instagramPage; });
+  ['wa-footer','wa-footer2'].forEach(id => { const el=document.getElementById(id); if(el) el.href=UNIT.hostWhatsApp; });
+
+  // Transport - airport
+  document.getElementById('driver-wa-btn').href = wa('Hi! I\'m a guest at Unit ' + UNIT.number + ' and I\'d like to arrange an airport transfer.');
+  document.getElementById('daytrips-driver-btn').href = wa('Hi! I\'m a Sleepover Spaces guest at Unit ' + UNIT.number + ' and I\'d like to arrange a day tour.');
+  document.getElementById('ph-tours-btn').href = UNIT.toursWhatsApp + '?text=' + encodeURIComponent('Hi! I\'m staying at Sleepover Spaces Unit ' + UNIT.number + ' and I\'m interested in a Philippines trip.');
+
+  // Unit notes
+  UNIT.specialNotes.forEach(note => {
+    const el = document.createElement('div');
+    el.className = 'unit-note';
+    el.innerHTML = `<div class="unit-note-header"><div class="unit-note-icon">${note.icon}</div><div class="unit-note-title">${note.title}</div></div><div class="unit-note-body">${note.body}</div>`;
+    document.getElementById('unit-notes-container').appendChild(el);
+  });
+
+  // Appliances
+  UNIT.appliances.forEach((a, i) => {
+    const div = document.createElement('div');
+    div.className = 'info-row';
+    if (i === UNIT.appliances.length-1) div.style.borderBottom='none';
+    div.innerHTML = `<div class="info-label">${a.icon} ${a.label}</div><div class="info-value light">${a.value}</div>`;
+    document.getElementById('appliances-list').appendChild(div);
+  });
+
+  // Spaces tab header
+  document.getElementById('spaces-header-title').textContent = UNIT.building + ' · ' + UNIT.tagline;
+
+  // Unit highlights
+  buildAmenityGrid('unit-highlights-grid', UNIT.unitHighlights);
+
+  // Building amenities
+  buildAmenityGrid('building-amenities-grid', UNIT.buildingAmenities);
+
+  // Review platforms
+  const reviewPlatforms = [
+    { key:'airbnb',   name:'Airbnb',        emoji:'🏠', cls:'platform-airbnb',   action:'Leave a review on Airbnb' },
+    { key:'booking',  name:'Booking.com',   emoji:'🔵', cls:'platform-booking',  action:'Leave a review on Booking.com' },
+    { key:'facebook', name:'Facebook',      emoji:'👍', cls:'platform-facebook', action:'Leave a review on Facebook' },
+  ];
+  const rl = document.getElementById('review-platform-list');
+  reviewPlatforms.forEach(p => {
+    const url = UNIT.reviewLinks[p.key] || '#';
+    const a = document.createElement('a');
+    a.href = url; a.target = '_blank';
+    a.className = 'platform-btn ' + p.cls;
+    a.innerHTML = `<div class="platform-logo">${p.emoji}</div><div class="platform-info"><div class="platform-name">${p.name}</div><div class="platform-action">${p.action}</div></div><div class="platform-arrow">→</div>`;
+    rl.appendChild(a);
+  });
+
+  // Book again platforms
+  const bookPlatforms = [
+    { key:'airbnb',  name:'Airbnb',       emoji:'🏠' },
+    { key:'booking', name:'Booking.com',  emoji:'🔵' },
+    { key:'vrbo',    name:'VRBO',         emoji:'🏡' },
+  ];
+  const bl = document.getElementById('book-platform-list');
+  bookPlatforms.forEach(p => {
+    const url = UNIT.bookingLinks[p.key] || '#';
+    const a = document.createElement('a');
+    a.href = url; a.target = '_blank';
+    a.className = 'book-platform-btn';
+    a.innerHTML = `<div class="book-platform-logo">${p.emoji}</div><div class="book-platform-name">${p.name}</div><span class="platform-arrow" style="color:rgba(255,255,255,0.3)">→</span>`;
+    bl.appendChild(a);
+  });
+
+  // Other properties
+  const opl = document.getElementById('other-props-list');
+  UNIT.otherProperties.forEach(p => {
+    const tagsHtml = p.tags.map(t => `<span class="prop-tag">${t}</span>`).join('');
+    const highlightHtml = p.highlight ? `<span class="prop-tag highlight">${p.highlight}</span>` : '';
+    const linksHtml = p.links.map(l => `<a href="${l.url}" target="_blank" class="prop-link-btn">${l.label} →</a>`).join('');
+    const div = document.createElement('div');
+    div.className = 'other-prop-card-v2';
+    div.innerHTML = `
+      <div class="prop-info-v2">
+        <div class="prop-name">${p.name}</div>
+        <div class="prop-loc">${p.location}</div>
+        <div class="prop-tags" style="margin-bottom:10px">${tagsHtml}${highlightHtml}</div>
+        <div class="prop-links">${linksHtml}</div>
+      </div>`;
+    opl.appendChild(div);
+  });
+}
+
+// ─── PHOTO STRIP ─────────────────────────────────────
+function buildPhotoStrip() {
+  const strip = document.getElementById('photo-strip');
+  const dotsRow = document.getElementById('photo-dots');
+  UNIT.photos.forEach((photo, i) => {
+    const slot = document.createElement('div');
+    slot.className = 'photo-slot';
+    if (photo.url) {
+      slot.innerHTML = `<img src="${photo.url}" alt="${photo.caption}" loading="lazy"><div class="photo-caption">${photo.caption}</div>`;
+    } else {
+      slot.innerHTML = `<div class="photo-placeholder"><svg width="40" height="34" viewBox="0 0 60 50" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="56" height="32" rx="5" fill="none" stroke="white" stroke-width="2.2"/><line x1="2" y1="12" x2="58" y2="12" stroke="white" stroke-width="1.2"/><rect x="7" y="4" width="18" height="13" rx="3.5" fill="none" stroke="white" stroke-width="1.5"/><rect x="35" y="4" width="18" height="13" rx="3.5" fill="none" stroke="white" stroke-width="1.5"/><path d="M2 28 Q30 33 58 28" fill="none" stroke="#C4785A" stroke-width="1.2"/><line x1="-1" y1="34" x2="-1" y2="43" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="61" y1="34" x2="61" y2="43" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="-3" y1="34" x2="63" y2="34" stroke="white" stroke-width="2" stroke-linecap="round"/></svg><span>Photo coming soon</span></div><div class="photo-caption">${photo.caption}</div>`;
+    }
+    strip.appendChild(slot);
+    const dot = document.createElement('div');
+    dot.className = 'photo-dot' + (i === 0 ? ' active' : '');
+    dotsRow.appendChild(dot);
+  });
+}
+
+function updatePhotoDots(strip) {
+  const dots = document.querySelectorAll('.photo-dot');
+  const slotW = 290; // 280px + 10px gap
+  const idx = Math.round(strip.scrollLeft / slotW);
+  dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+}
+
+// ─── AMENITY GRIDS ───────────────────────────────────
+function buildAmenityGrid(containerId, items) {
+  const grid = document.getElementById(containerId);
+  items.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'amenity-card';
+    div.innerHTML = `<div class="amenity-icon">${item.icon}</div><div><div class="amenity-name">${item.name}</div><div class="amenity-desc">${item.desc}</div></div>`;
+    grid.appendChild(div);
+  });
+}
+
+// ─── PAGE SWITCHING ───────────────────────────────────
+let mapInitialized = false;
+function switchPage(name, idx) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  document.getElementById('tab-indicator').style.left = (idx * 25) + '%';
+  window.scrollTo(0, 0);
+  if (name === 'explore' && !mapInitialized) { setTimeout(initMap, 100); mapInitialized = true; }
+}
+
+// ─── ZONE TABS ────────────────────────────────────────
+function switchZone(zone, btn) {
+  document.querySelectorAll('.zone-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.zone-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('zone-' + zone).classList.add('active');
+  if (zone === 'nearby' && mapInitialized) setTimeout(() => map.invalidateSize(), 100);
+}
+
+// ─── MAP ──────────────────────────────────────────────
+let map;
+function initMap() {
+  map = L.map('map', { zoomControl:true, scrollWheelZoom:false }).setView(UNIT.mapCenter, 14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap', maxZoom:19 }).addTo(map);
+  function icon(color, emoji) {
+    return L.divIcon({ html:`<div style="background:${color};width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.2);"><span style="transform:rotate(45deg);font-size:13px;">${emoji}</span></div>`, iconSize:[30,30], iconAnchor:[15,30], popupAnchor:[0,-32], className:'' });
+  }
+  const places = [
+    { lat:UNIT.mapCenter[0], lng:UNIT.mapCenter[1], color:'#16a34a', emoji:'🏠', name:'You are here — '+UNIT.building, desc:UNIT.location, tag:'Home Base' },
+    { lat:10.3295, lng:123.9070, color:'#EF3A5D', emoji:'🍜', name:'Sugbo Mercado', desc:'IT Park food market', tag:'Food' },
+    { lat:10.3185, lng:123.8968, color:'#EF3A5D', emoji:'🥩', name:'House of Lechon', desc:'Iconic Cebu lechon', tag:'Food' },
+    { lat:10.3212, lng:123.9041, color:'#EF3A5D', emoji:'🍳', name:'Yolk Brunch', desc:'Popular brunch spot', tag:'Food' },
+    { lat:10.3220, lng:123.9060, color:'#EF3A5D', emoji:'⭐', name:'Soccarat', desc:'Michelin-recognized restaurant', tag:'Food' },
+    { lat:10.3200, lng:123.8990, color:'#EF3A5D', emoji:'☕', name:'Pickup Coffee', desc:'~3 min walk from The Median', tag:'Food' },
+    { lat:10.2939, lng:123.9017, color:'#C4785A', emoji:'🏛️', name:"Basilica del Santo Niño", desc:'Oldest church in Philippines', tag:'Sight' },
+    { lat:10.2944, lng:123.9020, color:'#C4785A', emoji:'⛪', name:"Magellan's Cross", desc:'Historic landmark', tag:'Sight' },
+    { lat:10.3350, lng:123.9100, color:'#C4785A', emoji:'🛕', name:'Temple of Leah', desc:'Grand hilltop monument', tag:'Sight' },
+    { lat:10.2920, lng:123.8980, color:'#C4785A', emoji:'🛤️', name:'Colon Street', desc:'Oldest street in the Philippines', tag:'Sight' },
+    { lat:10.3174, lng:123.9053, color:'#1C1917', emoji:'🏬', name:'Ayala Center Cebu', desc:'Premier mall, dining & cinema', tag:'Shopping' },
+    { lat:10.3260, lng:123.9080, color:'#1C1917', emoji:'🏢', name:'Ayala Central Bloc', desc:'Walkable from IT Park', tag:'Shopping' },
+    { lat:10.3117, lng:123.9182, color:'#1C1917', emoji:'🏪', name:'SM City Cebu', desc:'Large mall near North Rec', tag:'Shopping' },
+    { lat:10.3280, lng:123.9120, color:'#1C1917', emoji:'🛒', name:'Landers Superstore', desc:'Best grocery & warehouse store', tag:'Shopping' },
+  ];
+  places.forEach(p => L.marker([p.lat,p.lng],{icon:icon(p.color,p.emoji)}).addTo(map).bindPopup(`<div class="popup-name">${p.name}</div><div class="popup-desc">${p.desc}</div><span class="popup-tag">${p.tag}</span>`));
+}
+
+// ─── PWA ──────────────────────────────────────────────
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; });
+
+// ─── INIT ─────────────────────────────────────────────
+populate();
+document.getElementById('tab-indicator').style.left = '0%';
+</script>
+</body>
+</html>
